@@ -1,4 +1,5 @@
 #include "AppDelegate.h"
+#include "Test.h"
 
 USING_NS_CC;
 
@@ -52,12 +53,16 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // Set the design resolution
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::FIXED_HEIGHT);
     auto frameSize = glview->getFrameSize();
-    // if the frame's height is larger than the height of medium size.
+
+	if (Platform::OS_WINDOWS == getTargetPlatform())
+	{
+		glview->setFrameSize(1366, 768);
+	}
 
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = HelloWorld::createScene();
+    auto scene = TestLayer::createScene();
 
     // run
     director->runWithScene(scene);

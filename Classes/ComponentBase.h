@@ -22,7 +22,7 @@ public://logics
 	virtual void clear() = 0;
 
 	template <class T>
-	T* create<T>(EntityBase* owner)
+	T* create(EntityBase* owner)
 	{
 		auto ret = new T;
 		ret->T::init();

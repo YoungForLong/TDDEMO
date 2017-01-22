@@ -1,6 +1,7 @@
 #include "ObjectMgr.h"
 #include "EntityBase.h"
 
+
 bool ObjectMgr::registerEntity(EntityBase * obj_)
 {
 	auto r = _objMap.insert(make_pair(obj_->id(), obj_));
@@ -20,4 +21,18 @@ bool ObjectMgr::removeEntity(EntityBase * obj_)
 EntityBase * ObjectMgr::getEntityById(const int id_)
 {
 	return _objMap.find(id_)->second;
+}
+
+void ObjectMgr::updateAll()
+{
+	for (auto iter = _objMap.begin(); iter != _objMap.end(); ++iter)
+	{
+		auto entity = (*iter).second;
+		entity->update();
+	}
+}
+
+int ObjectMgr::getNewId()
+{
+	return _curID++;
 }

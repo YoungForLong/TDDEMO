@@ -15,13 +15,27 @@ enum ObjectType
 
 enum ComponentType
 {
-	null_type = 0x0000,
-	communicator = 0x0001
+	comp_null_type = 0x0000,
+	comp_communicator = 0x0001,
+	comp_moving = 0x0002,
+	comp_displayer = 0x0004
 };
 
 const float FPS = 60.0f;
 const int WHOLE_MAP_WIDTH = 10000;
 const int WHOLE_MAP_HEIGHT = 10000;
 const float ADT = 1.0f / FPS;
+
+//weight for force
+const float BrakingWeight = 0.1f;
+const float SeekWeight = 1.0f;
+const float FleeWeight = 1.0f;
+const float ObsAvoiWeight = 10.0f;
+const float PursuitWeight = 1.0f;
+const float EvadeWeight = 1.0f;
+const size_t smoothing_frames = 10;
+
+const float max_float = 99999;
+#define illegal_aim Vec2(-999.0f, -999.0f)
 
 #endif

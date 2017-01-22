@@ -40,7 +40,7 @@ void MsgDispatcher::dispatchMsg()
 		const Telegram& telegram = *_msgQueue.begin();
 
 		//find the recipient
-		CompCommunicator* receiver = (OMGR->getEntityById(telegram.receiver_))->getComponent<CompCommunicator>(ComponentType::communicator);
+		CompCommunicator* receiver = (OMGR->getEntityById(telegram.receiver_))->getComponent<CompCommunicator>(ComponentType::comp_communicator);
 
 		/*cout << "\nQueued telegram ready for dispatch: Sent to "
 			<< EMGR->getNameOfEntity(receiver->ID()) << ". Msg is " << Msg2Str(telegram.msg_);*/

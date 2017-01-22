@@ -15,6 +15,12 @@ public:
 	{
 		MSGDISPATCHER->addMsg(delay, sender, receiver, type, extra);
 	}
+
+	virtual bool init()override { return true; }
+
+	virtual void update() override {}
+
+	virtual void clear() override {}
 };
 
 #endif // !_COMMUNICATOR_H_

@@ -68,7 +68,7 @@ void CellSpacePartition::updateEntity(CompMoving* moving, Vec2 old_position)
 	}
 }
 
-std::vector<CompMoving*> CellSpacePartition::getNeighbors(CompMoving* entity, double radius)
+std::vector<CompMoving*> CellSpacePartition::getNeighbors(CompMoving* entity, float radius)
 {
 	Vec2 position = entity->position();
 
@@ -84,9 +84,36 @@ std::vector<CompMoving*> CellSpacePartition::getNeighbors(CompMoving* entity, do
 		for (auto iter = cell.members_.cbegin(); iter != cell.members_.end(); iter++)
 		{
 			Vec2 toNeighbor = (*iter)->position() - position;
-			if (toNeighbor.getLengthSq() < (radius*radius)&&(*iter)!=entity)
+			if ((*iter) != entity && toNeighbor.getLengthSq() < (radius*radius))
 			{
 				neighbors.push_back(*iter);
+			}
+		}
+	});
+
+	return neighbors;
+}
+
+std::vector<CompMoving*> CellSpacePartition::getObstacles(CompMoving * self, float radius)
+{
+	Vec2 position = self->position();
+
+	Vec2 temp = Vec2(position - Vec2(radius, radius));
+
+	//first step:get cells intersecting the view circle
+	std::vector<Cell> queryRects;
+	queryRects = getCells(position, radius);
+	std::vector<CompMoving*> neighbors;
+
+	//caculate if the rect is contained by circle
+	std::for_each(queryRects.cbegin(), queryRects.cend(), [&self, &neighbors, position, radius, this](Cell cell) {
+		for (auto iter = cell.members_.cbegin(); iter != cell.members_.end(); iter++)
+		{
+			Vec2 toNeighbor = (*iter)->position() - position;
+			if (toNeighbor.getLengthSq() < (radius*radius) && (*iter) != self)
+			{
+				if(self->isObstacle())
+					neighbors.push_back(*iter);
 			}
 		}
 	});

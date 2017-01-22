@@ -12,10 +12,18 @@ class ObjectMgr :public Singleton<ObjectMgr>
 {
 private:
 	map<int, EntityBase*> _objMap;
+
+	//从100以后是自动分配的ID
+	int _curID = 100;
 public:
 	bool registerEntity(EntityBase* obj_);
 	bool removeEntity(EntityBase* obj_);
 	EntityBase* getEntityById(const int id_);
+
+	//更新所有实体，但是不允许删除和创建，删除和创建将延迟到下一帧
+	void updateAll();
+
+	int getNewId();
 };
 
 #define OMGR ObjectMgr::instance()

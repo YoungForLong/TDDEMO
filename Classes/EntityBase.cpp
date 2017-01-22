@@ -2,8 +2,9 @@
 
 void EntityBase::update()
 {
-	for_each(_components.begin(), _components.end(), [](ComponentBase* comp) {
-		if(comp->enable)
+	for_each(_components.begin(), _components.end(), [](pair<ComponentType,ComponentBase*> pair) {
+		auto comp = pair.second;
+		if (comp->enable)
 			comp->update();
 	});
 }
