@@ -1,9 +1,9 @@
-#include "Displayer.h"
+#include "CompDisplayer.h"
 #include "CompMoving.h"
 #include "EntityBase.h"
 #include <numeric>
 
-bool Displayer::init()
+bool CompDisplayer::init()
 {
 	_sprite = Sprite::create("CloseNormal.png");
 	_sprite->retain();
@@ -11,7 +11,7 @@ bool Displayer::init()
 	return true;
 }
 
-void Displayer::update()
+void CompDisplayer::update()
 {
 	auto moving = root->getComponent<CompMoving>(ComponentType::comp_moving);
 	
@@ -30,12 +30,12 @@ void Displayer::update()
 	}
 }
 
-void Displayer::clear()
+void CompDisplayer::clear()
 {
 	_sprite->release();
 }
 
-void Displayer::transformToRotation(Vec2 heading)
+void CompDisplayer::transformToRotation(Vec2 heading)
 {
-	_sprite->setRotation(heading.getAngle()*180 / PI + 25);
+	_sprite->setRotation(90 - heading.getAngle() * 180 / PI);
 }

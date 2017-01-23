@@ -5,7 +5,7 @@
 
 using namespace cocos2d;
 
-class Displayer :public ComponentBase
+class CompDisplayer :public ComponentBase
 {
 public:
 	virtual bool init() override;

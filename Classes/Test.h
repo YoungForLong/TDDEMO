@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EntityBase.h"
+#include "WaterEffect.h"
 
 class TestLayer :public Layer
 {
@@ -11,7 +12,13 @@ public:
 
 	virtual void update(float fl) override;
 
+	void addTouchReact();
 private:
 	EntityBase* _entity1;
 	EntityBase* _entity2;
+	Sprite* _testShip;
+	vector<Sprite*> _bgSps;
+	Vec2 _toTarget;
+
+	GLProgramState* _we;
 };
