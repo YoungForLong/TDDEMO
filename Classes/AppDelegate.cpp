@@ -3,7 +3,10 @@
 
 USING_NS_CC;
 
+static cocos2d::Size tinyTestSize = cocos2d::Size(720, 400);
+static cocos2d::Size halfTestSize = cocos2d::Size(1366, 768);
 static cocos2d::Size designResolutionSize = cocos2d::Size(2732, 1536);
+
 
 
 AppDelegate::AppDelegate()
@@ -56,7 +59,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	if (Platform::OS_WINDOWS == getTargetPlatform())
 	{
-		glview->setFrameSize(1366, 768);
+		glview->setFrameSize(halfTestSize.width, halfTestSize.height);
 	}
 
     register_all_packages();

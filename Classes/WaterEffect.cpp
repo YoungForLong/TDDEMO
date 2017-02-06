@@ -12,7 +12,7 @@ WaterEffect::~WaterEffect()
 }
 
 
-WaterEffect* WaterEffect::create(const char *pszFileName) {
+WaterEffect* WaterEffect::create(const std::string& pszFileName) {
 	auto pRet = new (std::nothrow) WaterEffect();
 	if (pRet && pRet->initWithFile(pszFileName)) {
 		pRet->autorelease();
@@ -27,8 +27,11 @@ WaterEffect* WaterEffect::create(const char *pszFileName) {
 bool WaterEffect::initWithTexture(Texture2D* texture, const Rect& rect) {
 	Texture2D::TexParams texParams = { GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT };
 	texture->setTexParameters(&texParams);
+	
+	//set full window size
+	auto temp = Rect(0, 0, 2732, 1536);
 
-	if (Sprite::initWithTexture(texture, rect)) {
+	if (Sprite::initWithTexture(texture, temp)) {
 		
 
 #if CC_ENABLE_CACHE_TEXTURE_DATA  

@@ -38,12 +38,11 @@ bool TestLayer::init()
 	}*/
 	srand(time(0));
 
-	auto water = Effect::WaterEffect::create("ColorMap.jpg");
-	water->setScaleX(2.7);
-	water->setScaleY(1.5);
+	auto water = Effect::WaterEffect::create("water_pic_1.png");
 	water->setAnchorPoint(Vec2::ZERO);
+	/*water->setScale(10);*/
 	water->retain();
-	this->addChild(water, -1000);
+	this->addChild(water, bg_zorder);
 	_we = water->getGLProgramState();
 
 	_testShip = Sprite::create("test_ship.png");
@@ -70,7 +69,7 @@ bool TestLayer::init()
 
 void TestLayer::update(float fl)
 {
-	if((_toTarget-Vec2::ZERO).getLengthSq()>0.1f)
+	if(_toTarget.getLengthSq()>0.1f)
 	{
 		const float speed = 4;
 		
@@ -82,12 +81,12 @@ void TestLayer::update(float fl)
 			auto delta = -1 * _toTarget.getNormalized()*speed;
 
 			(*iter)->setPosition(oldPos + delta);
-
-			_toTarget -= delta;
 		}
 
-		if (_we)
-			_we->setUniformVec2("velocity", _toTarget.getNormalized()*factor);
+		if (_toTarget.getLengthSq() > speed*speed)
+			_toTarget -= _toTarget.getNormalized()*speed;
+		else
+			_toTarget = Vec2::ZERO;
 	}
 }
 

@@ -11,7 +11,7 @@ namespace Effect {
 		WaterEffect();
 		~WaterEffect();
 	public:
-		static WaterEffect* create(const char* pszFileName);
+		static WaterEffect* create(const std::string& pszFileName);
 	public:
 		bool initWithTexture(Texture2D* texture, const Rect& rect) override;
 		void initGLProgram();

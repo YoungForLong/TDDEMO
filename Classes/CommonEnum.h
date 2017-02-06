@@ -2,6 +2,7 @@
 #define _COMMON_ENUM_H_
 
 #include <map>
+#include "cocos2d.h"
 
 enum MsgType 
 {
@@ -36,6 +37,11 @@ const float EvadeWeight = 1.0f;
 const size_t smoothing_frames = 10;
 
 const float max_float = 99999;
-#define illegal_aim Vec2(-999.0f, -999.0f)
+const cocos2d::Vec2 illegal_aim = cocos2d::Vec2(-999.0f, -999.0f);
+
+//depth,z_order
+const int bg_zorder = -10;
+
+#define CREATE_SPRITE(__filename__) (Sprite::create(__filename__))
 
 #endif

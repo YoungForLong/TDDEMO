@@ -1,5 +1,5 @@
 uniform sampler2D u_normalMap;  
-uniform vec2 velocity;
+//uniform vec2 velocity;
   
 #ifdef GL_ES
 varying mediump vec2 v_texCoord;
@@ -24,7 +24,7 @@ float specular(vec3 n,vec3 l,vec3 e) {
   
 void main() {  
 
-    float timeFactor = 0.02;
+    float timeFactor = 0.1;
     float offsetFactor = 0.5;
     float refractionFactor = 0.7;
 
@@ -47,6 +47,8 @@ void main() {
 
     //gl_FragColor = texture2D(CC_Texture0, v_texCoordN); //这样可以看到不带高光的水面，可选
     //gl_FragColor = texture2D(u_normalMap, v_texCoordN); //这样可以只看法线图，可选
-    gl_FragColor = texture2D(CC_Texture0, lerp(v_texCoord, v_texCoordN, 0.3) * 2 + velocity * vec2(1,-1) * CC_Time.y )*0.9 + vec4(color,1) * 0.1; //加了高光效果的水面
-    //gl_FragColor = texture2D(CC_Texture0, v_texCoordN);
+    //gl_FragColor = texture2D(CC_Texture0, lerp(v_texCoord, v_texCoordN, 0.3) + (velocity) * vec2(1,-1) * CC_Time.y )*0.9 
+    //vec4(color,1) * 0.1; //加了高光效果的水面
+
+    gl_FragColor = texture2D(CC_Texture0, lerp(v_texCoord, v_texCoordN, 0.3)) + vec4(color,1) * 0.1; //加了高光效果的水面
 } 
