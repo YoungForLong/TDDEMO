@@ -2,6 +2,7 @@
 #include "CompCommunicator.h"
 #include "ObjectMgr.h"
 #include "EntityBase.h"
+#include "GlobalTime.h"
 
 void MsgDispatcher::discharge(CompCommunicator* receiver, const Telegram& tel)
 {
@@ -17,15 +18,7 @@ void MsgDispatcher::addMsg(long int delay, int sender, int receiver, MsgType msg
 
 	assert(E_receiver&&"recevier cannot be found");
 
-	Telegram tel(clock(), sender, receiver, msg, extraInfo);
-	
-	if (delay == 0)
-	{ }
-	else
-	{
-		long int currentTime = clock();
-		tel.dispatchTime_ = delay + currentTime;
-	}
+	Telegram tel(GT->totalTime + delay, sender, receiver, msg, extraInfo);
 
 	this->_msgQueue.insert(tel);
 }
@@ -33,8 +26,7 @@ void MsgDispatcher::addMsg(long int delay, int sender, int receiver, MsgType msg
 void MsgDispatcher::dispatchMsg()
 {
 	while (!_msgQueue.empty() &&
-		(_msgQueue.begin()->dispatchTime_ < long(clock())) &&
-		(_msgQueue.begin()->dispatchTime_ > 0))
+		(_msgQueue.begin()->dispatchTime_ < GT->totalTime))
 	{
 		//read the telegram from the front of the queue
 		const Telegram& telegram = *_msgQueue.begin();

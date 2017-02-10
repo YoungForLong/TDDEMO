@@ -48,6 +48,7 @@ public:
 	void updateEntity(CompMoving*, Vec2);
 	std::vector<CompMoving*> getNeighbors(CompMoving* self, float);
 	std::vector<CompMoving*> getObstacles(CompMoving* self, float);
+
 	void clear();
 	const std::vector<Cell> getCells(Vec2, double);
 	static CellSpacePartition* instance();

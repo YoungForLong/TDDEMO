@@ -6,6 +6,7 @@
 #include "CompCommunicator.h"
 #include "CompMoving.h"
 #include "WaterEffect.h"
+#include "SeaSprite.h"
 
 Scene * TestLayer::createScene()
 {
@@ -16,6 +17,8 @@ Scene * TestLayer::createScene()
 
 bool TestLayer::init()
 {
+	if (!Layer::init())
+		return false;
 	/*CSP->init(Rect(0, 0, WHOLE_MAP_WIDTH, WHOLE_MAP_HEIGHT), 10, 10);
 
 	_entity1 = EntityBase::create<EntityBase>();
@@ -38,17 +41,15 @@ bool TestLayer::init()
 	}*/
 	srand(time(0));
 
-	auto water = Effect::WaterEffect::create("water_pic_1.png");
-	water->setAnchorPoint(Vec2::ZERO);
-	/*water->setScale(10);*/
-	water->retain();
-	this->addChild(water, bg_zorder);
-	_we = water->getGLProgramState();
+	SeaSprite::instance()->init();
+
+	auto seaSp = SeaSprite::instance()->addSeaEffect(this);
 
 	_testShip = Sprite::create("test_ship.png");
 	_testShip->setPosition(Director::getInstance()->getWinSize() / 2);
 	_testShip->setScale(2);
 	this->addChild(_testShip, 10);
+	_heroPos = Vec2(2732, 1536) / 2;
 	
 	for (int i = 0; i < 4; ++i)
 	{
@@ -84,10 +85,15 @@ void TestLayer::update(float fl)
 		}
 
 		if (_toTarget.getLengthSq() > speed*speed)
+		{
 			_toTarget -= _toTarget.getNormalized()*speed;
+			_heroPos += _toTarget.getNormalized()*speed;
+		}
 		else
 			_toTarget = Vec2::ZERO;
 	}
+
+	SeaSprite::instance()->updateByHeroPosition(_heroPos);
 }
 
 void TestLayer::addTouchReact()

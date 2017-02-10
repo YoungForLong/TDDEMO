@@ -71,8 +71,14 @@ protected://为了顺利移动使用的辅助函数
 	const Vec2 evade(CompMoving* target);
 	const Vec2 obstacleAvoidance(vector<CompMoving*>& obstacles);
 
+private:
+#pragma region NetProtocal
+
+#pragma endregion
+
 public:
 	void moveTo(Vec2 aimPos);
 	void stop();
 	void moveTowards(Vec2 h);
+
 };

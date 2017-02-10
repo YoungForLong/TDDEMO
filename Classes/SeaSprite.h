@@ -11,6 +11,7 @@ using namespace std;
 class SeaSprite :public Singleton<SeaSprite>
 {
 public:
+	void init();
 	bool addSeaEffect(Layer* parent);
 	void updateByHeroPosition(const Vec2& pos);
 protected:

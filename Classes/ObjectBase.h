@@ -18,7 +18,7 @@ public:
 
 	virtual void update() = 0;
 	virtual void clear() = 0;
-protected:
+public:
 	int _id;
 	ObjectType _type;
 };

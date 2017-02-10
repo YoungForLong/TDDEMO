@@ -5,8 +5,8 @@
 
 bool CompDisplayer::init()
 {
-	_sprite = Sprite::create("CloseNormal.png");
-	_sprite->retain();
+	if (!root)
+		return false;
 
 	return true;
 }
@@ -17,14 +17,14 @@ void CompDisplayer::update()
 	
 	if (moving)
 	{
-		_sprite->setPosition(moving->position());
+		_sprite->setPosition(transformToVisionPosition(moving->position()));
 		
 		_latestHeadings.push_back(moving->heading());
 
 		if (_latestHeadings.size() == smoothing_frames)
 		{
 			auto th = accumulate(_latestHeadings.begin(), _latestHeadings.end(), Vec2::ZERO);
-			transformToRotation(th);
+			_sprite->setRotation(CU->transformHeadingToRotation(th));
 			_latestHeadings.clear();
 		}	
 	}
@@ -35,7 +35,12 @@ void CompDisplayer::clear()
 	_sprite->release();
 }
 
-void CompDisplayer::transformToRotation(Vec2 heading)
+void CompDisplayer::applySprite(ObjectType type)
 {
-	_sprite->setRotation(90 - heading.getAngle() * 180 / PI);
+	_sprite = CREATE_SPRITE(spriteNameMap[type]);
+	_sprite->retain();
+}
+
+Vec2 CompDisplayer::transformToVisionPosition(const Vec2& pos)
+{
 }

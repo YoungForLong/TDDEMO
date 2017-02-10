@@ -4,6 +4,9 @@
 
 bool CompMoving::init()
 {
+	if (!root)
+		return false;
+
 	_position = Vec2::ZERO;
 	_speed = 0.0f;
 	_velocity = Vec2::ZERO;

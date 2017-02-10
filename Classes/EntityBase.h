@@ -24,9 +24,14 @@ public:
 #pragma endregion
 
 public:
-	void update() override;
+	//更新所有组件,子类显式调用，在开头
+	virtual void update() override;
 
-	void clear() override;
+	//清除组件，子类显式调用，在结尾处
+	virtual void clear() override;
+
+	//初始化信息
+	virtual bool init() {}
 
 	template<class T>
 	static T* create();
@@ -57,6 +62,11 @@ inline T * EntityBase::create()
 {
 	auto id_ = OMGR->getNewId();
 	auto ret = new T(id_);
-	OMGR->registerEntity(ret);
-	return ret;
+	if (ret->init())
+	{
+		OMGR->registerEntity(ret);
+		return ret;
+	}
+	else
+		return nullptr;
 }

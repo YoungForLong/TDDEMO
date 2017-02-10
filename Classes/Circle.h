@@ -3,7 +3,6 @@
 #include"math.h"
 
 using namespace cocos2d;
-#define PI 3.1415926
 
 
 class Circle

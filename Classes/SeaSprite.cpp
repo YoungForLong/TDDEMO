@@ -1,7 +1,15 @@
 #include "SeaSprite.h"
 
+void SeaSprite::init()
+{
+	_parent = nullptr;
+	_layerOnly = false;
+}
+
 bool SeaSprite::addSeaEffect(Layer* parent)
 {
+	_parent = parent;
+
 	if (_layerOnly)
 	{
 		return false;
@@ -9,7 +17,10 @@ bool SeaSprite::addSeaEffect(Layer* parent)
 
 	for (int i = 0; i < 4; ++i)
 	{
-		auto sp = Effect::WaterEffect::create(StringUtils::format("water_pic_%d.png", i + 1).c_str());
+		auto sp = Effect::WaterEffect::create(StringUtils::format("water_pic_%d.png", i + 1));
+		sp->setAnchorPoint(Vec2::ZERO);
+		parent->addChild(sp, bg_zorder);
+		_seaLands.push_back(sp);
 	}
 
 	setLayoutByPos(Vec2::ZERO);
@@ -21,6 +32,7 @@ bool SeaSprite::addSeaEffect(Layer* parent)
 
 void SeaSprite::updateByHeroPosition(const Vec2 & pos)
 {
+	setLayoutByPos(pos);
 }
 
 void SeaSprite::setLayoutByPos(const Vec2 & center)
@@ -63,10 +75,10 @@ void SeaSprite::setLayoutByPos(const Vec2 & center)
 		break;
 	}
 
-	auto originPos = Vec2(xRemainder, yRemainder) - Vec2(2732, 1536);
+	auto originPos = -1 * Vec2(xRemainder, yRemainder);
 	for (int i = 0; i < 4; ++i)
 	{
-		Vec2 eachPos = 
+		Vec2 eachPos = originPos + Vec2(2732 * ((i) % 2), 1536 * ((i) / 2));
 		_seaLands.at(targetArr[i] - 1)->setPosition(eachPos);
 	}
 }

@@ -20,5 +20,5 @@ private:
 	vector<Sprite*> _bgSps;
 	Vec2 _toTarget;
 
-	GLProgramState* _we;
+	Vec2 _heroPos;
 };
