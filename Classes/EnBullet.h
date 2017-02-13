@@ -21,7 +21,7 @@ typedef struct
 
 class EnBullet :public EntityBase
 {
-private:
+public:
 	EnBullet(int id_) :EntityBase(id_) { _type = bullet; }
 	~EnBullet() {}
 public:
@@ -34,7 +34,6 @@ public:
 	//为子弹添加信息
 	void addInfo(const AttackInfo& info);
 
-protected:
 	//子弹打向目标
 	void flyToAim();
 

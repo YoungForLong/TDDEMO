@@ -21,6 +21,8 @@ bool CompMoving::init()
 	_aimPos = illegal_aim;
 	_dBoxLength = 40;
 
+	onArrive = nullptr;
+
 	CSP->addEntity(this);
 
 	return true;
@@ -71,6 +73,12 @@ void CompMoving::clear()
 const Vec2 CompMoving::seek(Vec2 aimPos)
 {
 	auto toTarget = aimPos - _position;
+	if (toTarget.getLengthSq() < _speed*_speed)
+	{
+		if (onArrive)
+			onArrive();
+		return toTarget;
+	}
 	return toTarget.getNormalized()*_speed;
 }
 

@@ -25,19 +25,31 @@ public:
 
 public:
 	//更新所有组件,子类显式调用，在开头
-	virtual void update() override;
+	virtual void update() override
+	{
+		for_each(_components.begin(), _components.end(), [](pair<ComponentType, ComponentBase*> pair) {
+			auto comp = pair.second;
+			if (comp->enable)
+				comp->update();
+		});
+	}
 
 	//清除组件，子类显式调用，在结尾处
-	virtual void clear() override;
+	virtual void clear() override
+	{
+		for (auto iter = ++(_components.end()); iter == _components.begin(); --iter)
+		{
+			iter->second->clear();
+		}
+	}
 
 	//初始化信息
-	virtual bool init() {}
+	virtual bool init() { return true; }
 
 	template<class T>
 	static T* create();
 };
 
-#endif // !_ENTITY_BASE_H_
 
 template<class T>
 inline T * EntityBase::getComponent(ComponentType type_)
@@ -70,3 +82,6 @@ inline T * EntityBase::create()
 	else
 		return nullptr;
 }
+
+
+#endif // !_ENTITY_BASE_H_

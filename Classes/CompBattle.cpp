@@ -18,6 +18,12 @@ bool CompBattle::init()
 	_attackLimit = _originConfig.attackLimit_;
 	_attackDuration = _originConfig.attackDuration_;
 	_armour = _originConfig.armour_;
+
+	_attackCoolDown = 0;
+	_bonusFlag = 0x0001;
+
+	//test
+	_bulletType = stone_bullet;
 }
 
 void CompBattle::update()
@@ -36,12 +42,30 @@ void CompBattle::normalAttack(int targetId)
 	if (_attackCoolDown != 0)
 	{
 		auto target = OMGR->getEntityById(targetId);
+		auto targetCm = target->getComponent<CompMoving>(comp_moving);
+		auto selfCm = root->getComponent<CompMoving>(comp_moving);
 		
+		if (targetCm->position().getDistanceSq(selfCm->position()) < _attackLimit * _attackLimit)
+		{
+			//create bullet
+			AttackInfo info;
+			info.heading_ = selfCm->heading();
+			info.position_ = selfCm->position();
+			info.source_ = root->id();
+			info.target_ = targetId;
+			info.typeFlag_ = _bonusFlag;
+			info.type_ = _bulletType;
+
+			auto bullet = EnBullet::create<EnBullet>();
+			bullet->addInfo(info);
+			bullet->flyToAim();
+		}
 	}
 }
 
 void CompBattle::onAttacked()
 {
+	log("on attacked!");
 }
 
 void CompBattle::simOriginInfo()

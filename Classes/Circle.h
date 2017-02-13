@@ -1,6 +1,7 @@
 ﻿#pragma once
-#include"cocos2d.h"
-#include"math.h"
+#include "cocos2d.h"
+#include "math.h"
+#include "CommonEnum.h"
 
 using namespace cocos2d;
 

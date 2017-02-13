@@ -7,12 +7,15 @@
 enum MsgType 
 {
 	msg_destroy_self,
+	msg_reply_bullet_arrived,
+	msg_on_attack,
 };
 
 enum ObjectType 
 {
 	bullet,
 	stone_bullet,
+	ship
 };
 
 enum ComponentType
@@ -20,7 +23,8 @@ enum ComponentType
 	comp_null_type = 0x0000,
 	comp_communicator = 0x0001,
 	comp_moving = 0x0002,
-	comp_displayer = 0x0004
+	comp_displayer = 0x0004,
+	comp_battle = 0x0008,
 };
 
 enum AttackBonus
@@ -67,6 +71,11 @@ const int selfMsgReceiver_id = 1;
 
 //depth,z_order
 const int bg_zorder = -10;
+//define [0,100) as world depth
+const int world_below_sea_zorder = 0;
+const int world_sea_zorder = 10;
+const int world_above_sea_zorder = 20;
+const int world_air_zorder = 30;
 
 #define CREATE_SPRITE(__filename__) (Sprite::create(__filename__))
 

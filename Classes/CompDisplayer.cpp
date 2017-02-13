@@ -8,6 +8,8 @@ bool CompDisplayer::init()
 	if (!root)
 		return false;
 
+	applySprite(root->type());
+
 	return true;
 }
 
@@ -43,4 +45,5 @@ void CompDisplayer::applySprite(ObjectType type)
 
 Vec2 CompDisplayer::transformToVisionPosition(const Vec2& pos)
 {
+	return Vec2::ZERO;
 }

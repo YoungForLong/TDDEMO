@@ -3,6 +3,8 @@
 #include "EntityBase.h"
 #include "WaterEffect.h"
 
+class EnShip;
+
 class TestLayer :public Layer
 {
 public:
@@ -14,11 +16,5 @@ public:
 
 	void addTouchReact();
 private:
-	EntityBase* _entity1;
-	EntityBase* _entity2;
-	Sprite* _testShip;
-	vector<Sprite*> _bgSps;
-	Vec2 _toTarget;
-
-	Vec2 _heroPos;
+	EnShip* _hero;
 };

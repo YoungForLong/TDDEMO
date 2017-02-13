@@ -7,7 +7,7 @@
 
 class SelfMsgReciever :public EntityBase
 {
-private:
+public:
 	SelfMsgReciever(int id_) :EntityBase(id_) {}
 	~SelfMsgReciever() {}
 public:

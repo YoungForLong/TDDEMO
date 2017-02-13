@@ -81,4 +81,5 @@ public:
 	void stop();
 	void moveTowards(Vec2 h);
 
+	function<void()> onArrive;
 };

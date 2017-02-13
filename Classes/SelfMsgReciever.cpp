@@ -13,7 +13,10 @@ bool SelfMsgReciever::init()
 		{
 			auto entity = OMGR->getEntityById(msg.sender_);
 			OMGR->removeEntity(entity);
+			return true;
 		}
+
+		return false;
 	};
 
 	return true;
