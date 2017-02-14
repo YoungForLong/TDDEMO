@@ -24,7 +24,7 @@ bool SelfMsgReciever::init()
 
 SelfMsgReciever * SelfMsgReciever::create()
 {
-	auto ret = new SelfMsgReciever(selfMsgReceiver_id);
+	auto ret = new SelfMsgReciever();
 	if (ret->init())
 	{
 		OMGR->registerEntity(ret);

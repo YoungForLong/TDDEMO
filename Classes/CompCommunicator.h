@@ -16,7 +16,12 @@ public:
 		MSGDISPATCHER->addMsg(delay, sender, receiver, type, extra);
 	}
 
-	virtual bool init()override { return true; }
+	virtual bool init()override 
+	{ 
+		if (!root)
+			return false;
+		return true; 
+	}
 
 	virtual void update() override {}
 

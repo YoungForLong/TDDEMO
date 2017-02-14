@@ -4,3 +4,4 @@
 #include "CompCommunicator.h" 
 #include "CompDisplayer.h" 
 #include "CompMoving.h"
+#include "CompControllerTest.h"

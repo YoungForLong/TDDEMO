@@ -35,6 +35,7 @@ void CompDisplayer::update()
 void CompDisplayer::clear()
 {
 	_sprite->release();
+	_sprite->removeFromParent();
 }
 
 void CompDisplayer::applySprite(ObjectType type)
@@ -45,5 +46,5 @@ void CompDisplayer::applySprite(ObjectType type)
 
 Vec2 CompDisplayer::transformToVisionPosition(const Vec2& pos)
 {
-	return Vec2::ZERO;
+	return pos;
 }

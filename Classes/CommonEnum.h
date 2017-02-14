@@ -25,6 +25,7 @@ enum ComponentType
 	comp_moving = 0x0002,
 	comp_displayer = 0x0004,
 	comp_battle = 0x0008,
+	comp_controller_test = 0x0016,
 };
 
 enum AttackBonus
@@ -44,7 +45,7 @@ enum AttackBonus
 
 //math
 #define PI 3.1415926
-const float max_float = 99999;
+const float max_float = 3.402823466e+38F;
 
 //sys
 const float FPS = 60.0f;
@@ -63,7 +64,7 @@ const float FleeWeight = 1.0f;
 const float ObsAvoiWeight = 10.0f;
 const float PursuitWeight = 1.0f;
 const float EvadeWeight = 1.0f;
-const size_t smoothing_frames = 10;
+const size_t smoothing_frames = 20;
 
 //id，从1-100为系统保留id
 const int illegal_id = -9999;

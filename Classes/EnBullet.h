@@ -22,7 +22,7 @@ typedef struct
 class EnBullet :public EntityBase
 {
 public:
-	EnBullet(int id_) :EntityBase(id_) { _type = bullet; }
+	EnBullet(int id_) :EntityBase(id_) { _type = stone_bullet; }
 	~EnBullet() {}
 public:
 	virtual bool init() override;

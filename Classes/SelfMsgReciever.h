@@ -8,14 +8,14 @@
 class SelfMsgReciever :public EntityBase
 {
 public:
-	SelfMsgReciever(int id_) :EntityBase(id_) {}
+	SelfMsgReciever() :EntityBase(selfMsgReceiver_id) {}
 	~SelfMsgReciever() {}
 public:
 	virtual bool init() override;
 
 	virtual void clear() override { EntityBase::clear(); }
 
-	virtual void update() override { EntityBase::clear(); }
+	virtual void update() override { EntityBase::update(); }
 
 	static SelfMsgReciever* create();
 };

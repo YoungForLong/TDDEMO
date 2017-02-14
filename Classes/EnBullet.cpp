@@ -34,11 +34,13 @@ void EnBullet::addInfo(const AttackInfo & info)
 
 	auto compDisplayer = this->getComponent<CompDisplayer>(comp_displayer);
 	compDisplayer->applySprite(_attackInfo.type_);
+	compDisplayer->setLayer(static_cast<Layer*>(
+		Director::getInstance()->getRunningScene()->getChildByName("world")), world_above_sea_zorder);
 
 	auto compMoving = this->getComponent<CompMoving>(comp_moving);
 	compMoving->setPostion(_attackInfo.position_);
 	compMoving->setHeading(_attackInfo.heading_);
-	compMoving->setSpeed(CU->getConfigByKey(_attackInfo.type_, "speed").asFloat());
+	compMoving->setSpeed(/*CU->getConfigByKey(_attackInfo.type_, "speed").asFloat()*/10);
 
 	auto compCommunicator = this->getComponent<CompCommunicator>(comp_communicator);
 	
@@ -55,12 +57,14 @@ void EnBullet::addInfo(const AttackInfo & info)
 
 void EnBullet::flyToAim()
 {
-	if (_attackInfo.isNull())
+	if (!_attackInfo.isNull())
 	{
 		auto compMoving = this->getComponent<CompMoving>(comp_moving);
 		auto target = OMGR->getEntityById(_attackInfo.target_);
 
 		compMoving->setTarget(target->getComponent<CompMoving>(comp_moving));
+		
+		return;
 	}
 
 	assert(0 && "info is not applied");

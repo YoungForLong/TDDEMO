@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "Test.h"
+#include "GlobalTime.h"
 
 USING_NS_CC;
 
@@ -35,7 +36,10 @@ static int register_all_packages()
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
-    // initialize director
+    //init time
+	GT->init();
+	
+	// initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {

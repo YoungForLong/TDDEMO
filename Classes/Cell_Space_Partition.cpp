@@ -41,6 +41,22 @@ void CellSpacePartition::addEntity(CompMoving* moving)
 	this->_cells.at(positionToIndex(moving->position())).members_.push_back(moving);
 }
 
+void CellSpacePartition::removeEntity(CompMoving * cm)
+{
+	auto rectElem = this->_cells.at(positionToIndex(cm->position())).members_;
+
+	auto iter = rectElem.begin();
+	for (; iter != rectElem.end(); iter++)
+	{
+		if (*iter == cm)
+		{
+			break;
+		}
+	}
+	
+	rectElem.erase(iter);
+}
+
 int CellSpacePartition::positionToIndex(const Vec2 position)const
 {
 	assert((position.x<_spaceRect.getMaxX()) && (position.y < _spaceRect.getMaxY()) &&

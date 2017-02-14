@@ -12,6 +12,7 @@ public:
 	std::map<ObjectType, string> spriteNameMap =
 	{
 		make_pair<ObjectType,string>(stone_bullet,"stone_bullet.png"),
+		make_pair<ObjectType,string>(ship,"test_ship.png"),
 	};
 
 public:
@@ -21,7 +22,7 @@ public:
 
 	void applySprite(ObjectType type);
 
-	void setLayer(Layer* layer) { layer->addChild(_sprite); }
+	void setLayer(Layer* layer, int zorder) { layer->addChild(_sprite, zorder); }
 
 	Vec2 transformToVisionPosition(const Vec2& pos);
 private:

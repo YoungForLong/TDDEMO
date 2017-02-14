@@ -21,8 +21,9 @@ public:
 
 	/*normal attack
 	@param targetId Ä¿±êid
+	@return is attacking succ
 	*/
-	void normalAttack(int targetId);
+	bool normalAttack(int targetId);
 
 	void onAttacked();
 private:
@@ -34,6 +35,8 @@ private:
 #pragma endregion
 	
 	int calculateDamage(int damage);
+
+	bool isAttackCoolDown() const { return _attackCoolDown; }
 private:
 	BattleConfig _originConfig;
 	

@@ -45,6 +45,7 @@ public:
 public:
 	void init(Rect, int,int);
 	void addEntity(CompMoving*);
+	void removeEntity(CompMoving*);
 	void updateEntity(CompMoving*, Vec2);
 	std::vector<CompMoving*> getNeighbors(CompMoving* self, float);
 	std::vector<CompMoving*> getObstacles(CompMoving* self, float);

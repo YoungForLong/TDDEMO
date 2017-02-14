@@ -12,6 +12,8 @@ bool ObjectMgr::removeEntity(EntityBase * obj_)
 {
 	auto r = _objMap.erase(obj_->id());
 
+	obj_->clear();
+
 	delete obj_;
 	obj_ = nullptr;
 

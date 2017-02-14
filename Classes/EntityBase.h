@@ -37,9 +37,12 @@ public:
 	//清除组件，子类显式调用，在结尾处
 	virtual void clear() override
 	{
-		for (auto iter = ++(_components.end()); iter == _components.begin(); --iter)
+		auto iter = --_components.end();
+		while (iter != --_components.begin())
 		{
 			iter->second->clear();
+			delete (iter->second);
+			--iter;
 		}
 	}
 
@@ -61,8 +64,8 @@ template<class T>
 inline T* EntityBase::addComponent(ComponentType type_)
 {
 	auto comp = new T;
-	comp->init();
 	comp->root = this;
+	comp->init();
 
 	_components.emplace(type_, comp);
 

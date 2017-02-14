@@ -37,9 +37,9 @@ void CompBattle::clear()
 {
 }
 
-void CompBattle::normalAttack(int targetId)
+bool CompBattle::normalAttack(int targetId)
 {
-	if (_attackCoolDown != 0)
+	if (_attackCoolDown <= 0)
 	{
 		auto target = OMGR->getEntityById(targetId);
 		auto targetCm = target->getComponent<CompMoving>(comp_moving);
@@ -59,8 +59,14 @@ void CompBattle::normalAttack(int targetId)
 			auto bullet = EnBullet::create<EnBullet>();
 			bullet->addInfo(info);
 			bullet->flyToAim();
+
+			_attackCoolDown = _originConfig.attackDuration_ * 1000;
+
+			return true;
 		}
 	}
+
+	return false;
 }
 
 void CompBattle::onAttacked()

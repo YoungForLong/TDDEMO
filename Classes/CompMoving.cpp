@@ -13,13 +13,13 @@ bool CompMoving::init()
 	_heading = Vec2::ZERO;
 	
 	_cv = CollisionVolume();
-	_cv.circle_.push_back(Circle(20, Vec2(0, 0), 0, 360));
-	_cv.totalWidth_ = 20;
-	_cv.totalHeight_ = 20;
+	_cv.circle_.push_back(Circle(40, Vec2(0, 0), 0, 360));
+	_cv.totalWidth_ = 40;
+	_cv.totalHeight_ = 40;
 
 	_target = nullptr;
 	_aimPos = illegal_aim;
-	_dBoxLength = 40;
+	_dBoxLength = 80;
 
 	onArrive = nullptr;
 
@@ -45,14 +45,17 @@ void CompMoving::update()
 		return;
 	}
 
-	std::vector<CompMoving*> obstacles = CSP->getObstacles(this, _dBoxLength);
-
-	if (!obstacles.empty())
+	if (!this->_canCross)
 	{
-		auto obsAvoi_force = obstacleAvoidance(obstacles)*ObsAvoiWeight;
+		std::vector<CompMoving*> obstacles = CSP->getObstacles(this, _dBoxLength);
 
-		totalForce += obsAvoi_force;
-	}
+		if (!obstacles.empty())
+		{
+			auto obsAvoi_force = obstacleAvoidance(obstacles)*ObsAvoiWeight;
+
+			totalForce += obsAvoi_force;
+		}
+	}	
 		
 
 	_velocity = totalForce.getNormalized()*_speed;
@@ -62,12 +65,13 @@ void CompMoving::update()
 
 	//calculate pos
 	auto temp = _position;
-	_position += _velocity*ADT;
+	_position += _velocity;
 	CSP->updateEntity(this, temp);
 }
 
 void CompMoving::clear()
 {
+	CSP->removeEntity(this);
 }
 
 const Vec2 CompMoving::seek(Vec2 aimPos)
