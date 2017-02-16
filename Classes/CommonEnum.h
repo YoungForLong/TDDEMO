@@ -46,6 +46,7 @@ enum AttackBonus
 //math
 #define PI 3.1415926
 const float max_float = 3.402823466e+38F;
+const float precision = 0.001f;
 
 //sys
 const float FPS = 60.0f;
@@ -61,10 +62,10 @@ const cocos2d::Vec2 illegal_aim = cocos2d::Vec2(-999.0f, -999.0f);
 const float BrakingWeight = 0.1f;
 const float SeekWeight = 1.0f;
 const float FleeWeight = 1.0f;
-const float ObsAvoiWeight = 10.0f;
+const float ObsAvoiWeight = 1.0f;
 const float PursuitWeight = 1.0f;
 const float EvadeWeight = 1.0f;
-const size_t smoothing_frames = 20;
+const size_t smoothing_frames = 2;
 
 //id，从1-100为系统保留id
 const int illegal_id = -9999;

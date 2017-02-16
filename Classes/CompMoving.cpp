@@ -1,6 +1,8 @@
 #include "CompMoving.h"
 #include "Cell_Space_Partition.h"
 #include "Tranformation.h"
+#include "CommonUtils.h"
+#include "EntityBase.h"
 
 bool CompMoving::init()
 {
@@ -9,19 +11,14 @@ bool CompMoving::init()
 
 	_position = Vec2::ZERO;
 	_speed = 0.0f;
-	_velocity = Vec2::ZERO;
-	_heading = Vec2::ZERO;
-	
-	_cv = CollisionVolume();
-	_cv.circle_.push_back(Circle(40, Vec2(0, 0), 0, 360));
-	_cv.totalWidth_ = 40;
-	_cv.totalHeight_ = 40;
-
+	_velocity = Vec2(1, 0);
+	_heading = Vec2(1, 0);
 	_target = nullptr;
 	_aimPos = illegal_aim;
-	_dBoxLength = 80;
-
 	onArrive = nullptr;
+	_rSpeed = 0;
+
+	loadMovingConfig();
 
 	CSP->addEntity(this);
 
@@ -45,6 +42,7 @@ void CompMoving::update()
 		return;
 	}
 
+	//calculate resistance
 	if (!this->_canCross)
 	{
 		std::vector<CompMoving*> obstacles = CSP->getObstacles(this, _dBoxLength);
@@ -52,26 +50,49 @@ void CompMoving::update()
 		if (!obstacles.empty())
 		{
 			auto obsAvoi_force = obstacleAvoidance(obstacles)*ObsAvoiWeight;
-
+			CCLOG("seek force: %f,%f", totalForce.x, totalForce.y);
+			CCLOG("obs force: %f,%f", obsAvoi_force.x, obsAvoi_force.y);
+			CU->testNumArr.push_back(obsAvoi_force.getLength());
 			totalForce += obsAvoi_force;
 		}
-	}	
+	}
 		
 
 	_velocity = totalForce.getNormalized()*_speed;
+	/*_velocity += totalForce;
+	_velocity = _velocity.getNormalized()*_speed;*/
 
-	_heading = _velocity.getNormalized();
+	//_heading = _velocity.getNormalized();
 	
 
 	//calculate pos
 	auto temp = _position;
-	_position += _velocity;
-	CSP->updateEntity(this, temp);
+
+	if (syncHeading())
+	{
+		_position += _velocity;
+		CSP->updateEntity(this, temp);
+	}
 }
 
 void CompMoving::clear()
 {
 	CSP->removeEntity(this);
+}
+
+void CompMoving::loadMovingConfig()
+{
+	_speed = CU->getConfigByKey(root->type(), "speed").asFloat();
+
+	_cv = CollisionVolume();
+	_cv.circle_.push_back(Circle(40, Vec2(0, 0), 0, 360));
+	_cv.totalWidth_ = 40;
+	_cv.totalHeight_ = 40;
+	_canCross = CU->getConfigByKey(root->type(), "cancross").asBool();
+
+	_rSpeed = CU->getConfigByKey(root->type(), "rspeed").asFloat();
+
+	_dBoxLength = 80;
 }
 
 const Vec2 CompMoving::seek(Vec2 aimPos)
@@ -80,7 +101,11 @@ const Vec2 CompMoving::seek(Vec2 aimPos)
 	if (toTarget.getLengthSq() < _speed*_speed)
 	{
 		if (onArrive)
+		{
 			onArrive();
+			_target = nullptr;
+			_aimPos = Vec2::ZERO;
+		}
 		return toTarget;
 	}
 	return toTarget.getNormalized()*_speed;
@@ -188,6 +213,28 @@ const Vec2 CompMoving::obstacleAvoidance(vector<CompMoving*>& obstacles)
 
 	//convert the force from local to world space
 	return VectorToWorldSpace(steeringForce, _heading, _heading.getPerp());
+}
+
+bool CompMoving::syncHeading()
+{
+	/*auto diffAngle = _velocity.getAngle(_heading);
+
+	if (fabs(diffAngle) < _rSpeed)
+	{
+		_heading = _velocity.getNormalized();
+		return true;
+	}
+	else
+	{
+		auto testAngle = -diffAngle / fabs(diffAngle)*_rSpeed * 180 / PI;
+
+		_heading.rotate(Vec2::ZERO, -diffAngle / fabs(diffAngle)*_rSpeed);
+	}
+
+	return false;*/
+	
+	_heading = _velocity.getNormalized();
+	return true;
 }
 
 void CompMoving::moveTo(Vec2 aimPos)

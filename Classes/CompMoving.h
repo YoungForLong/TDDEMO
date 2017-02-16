@@ -21,6 +21,7 @@ protected:
 	Vec2 _velocity;//速度
 	Vec2 _heading;//朝向
 	CollisionVolume _cv;//碰撞体积
+	float _rSpeed;//转向速度
 
 	CompMoving* _target;
 
@@ -53,7 +54,8 @@ public:
 	void setTarget(CompMoving* tar) { _target = tar; }
 	void setTarget(const Vec2& aim) { _aimPos = aim; }
 
-	const bool isObstacle()const { return _canCross; }
+	const bool isObstacle()const { return !_canCross; }
+	//void setCanCross(bool cc) { _canCross = cc; }
 
 #pragma endregion
 
@@ -64,6 +66,8 @@ public:
 
 	virtual void clear() override;
 
+	void loadMovingConfig();
+
 protected://为了顺利移动使用的辅助函数
 	const Vec2 seek(Vec2 aimPos);
 	const Vec2 pursuit(CompMoving* target);
@@ -71,6 +75,7 @@ protected://为了顺利移动使用的辅助函数
 	const Vec2 evade(CompMoving* target);
 	const Vec2 obstacleAvoidance(vector<CompMoving*>& obstacles);
 
+	bool syncHeading();
 private:
 #pragma region NetProtocal
 

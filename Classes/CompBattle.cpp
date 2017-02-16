@@ -23,7 +23,7 @@ bool CompBattle::init()
 	_bonusFlag = 0x0001;
 
 	//test
-	_bulletType = stone_bullet;
+	_bulletType = bullet;
 }
 
 void CompBattle::update()

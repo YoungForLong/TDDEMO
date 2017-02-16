@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 #include "Test.h"
 #include "GlobalTime.h"
+#include "CommonUtils.h"
 
 USING_NS_CC;
 
@@ -36,8 +37,27 @@ static int register_all_packages()
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
-    //init time
+    
+#pragma region yyh
+	//init time
 	GT->init();
+	//init data
+	CU->loadConfigAsync([]() { 
+		auto& config = CU->_config;
+
+		for (auto typeIter = config.begin(); typeIter != config.end(); ++typeIter)
+		{
+			auto& eachConfig = typeIter->second;
+			CCLOG("typename: %s", CU->type_to_string(typeIter->first).c_str());
+			for (auto iter = eachConfig.begin(); iter != eachConfig.end(); ++iter)
+			{
+				CCLOG("%s: %s",iter->first.c_str(), iter->second.asString().c_str());
+			}
+		}
+	
+	});
+
+#pragma endregion
 	
 	// initialize director
     auto director = Director::getInstance();

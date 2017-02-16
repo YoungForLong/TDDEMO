@@ -9,13 +9,6 @@ using namespace cocos2d;
 class CompDisplayer :public ComponentBase
 {
 public:
-	std::map<ObjectType, string> spriteNameMap =
-	{
-		make_pair<ObjectType,string>(stone_bullet,"stone_bullet.png"),
-		make_pair<ObjectType,string>(ship,"test_ship.png"),
-	};
-
-public:
 	virtual bool init() override;
 	virtual void update() override;
 	virtual void clear() override;
@@ -29,7 +22,7 @@ private:
 	//textures: pictures, particles, bones
 	Sprite* _sprite;
 	
-	std::vector<Vec2> _latestHeadings;
+	std::queue<Vec2> _latestHeadings;
 };
 
 #endif

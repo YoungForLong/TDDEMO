@@ -2,6 +2,7 @@
 #include "CompMoving.h"
 #include "EntityBase.h"
 #include <numeric>
+#include "CommonUtils.h"
 
 bool CompDisplayer::init()
 {
@@ -21,14 +22,17 @@ void CompDisplayer::update()
 	{
 		_sprite->setPosition(transformToVisionPosition(moving->position()));
 		
-		_latestHeadings.push_back(moving->heading());
-
-		if (_latestHeadings.size() == smoothing_frames)
+		//现在的方向是之前固定帧数的平均值
+		_latestHeadings.push(moving->heading());
+		if (_latestHeadings.size() >= smoothing_frames)
 		{
-			auto th = accumulate(_latestHeadings.begin(), _latestHeadings.end(), Vec2::ZERO);
-			_sprite->setRotation(CU->transformHeadingToRotation(th));
-			_latestHeadings.clear();
-		}	
+			_latestHeadings.pop();
+		}
+
+		auto equalArr = _latestHeadings._Get_container();
+
+		auto th = accumulate(equalArr.begin(), equalArr.end(), Vec2::ZERO);
+		_sprite->setRotation(CU->transformHeadingToRotation(th));
 	}
 }
 
@@ -40,7 +44,8 @@ void CompDisplayer::clear()
 
 void CompDisplayer::applySprite(ObjectType type)
 {
-	_sprite = CREATE_SPRITE(spriteNameMap[type]);
+	auto name = CU->getConfigByKey(type, "spritename").asString() + ".png";
+	_sprite = CREATE_SPRITE(name);
 	_sprite->retain();
 }
 
