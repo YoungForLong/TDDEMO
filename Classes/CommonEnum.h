@@ -62,10 +62,11 @@ const cocos2d::Vec2 illegal_aim = cocos2d::Vec2(-999.0f, -999.0f);
 const float BrakingWeight = 0.1f;
 const float SeekWeight = 1.0f;
 const float FleeWeight = 1.0f;
-const float ObsAvoiWeight = 1.0f;
+const float ObsAvoiWeight = 0.05f;
 const float PursuitWeight = 1.0f;
 const float EvadeWeight = 1.0f;
-const size_t smoothing_frames = 2;
+const size_t smoothing_frames = 20;
+const float seek_offset_precision = 1.0f;
 
 //id，从1-100为系统保留id
 const int illegal_id = -9999;

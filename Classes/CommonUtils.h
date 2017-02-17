@@ -35,8 +35,8 @@ public:
 private:
 	mutex _mut;
 
-public:
-	vector<float> testNumArr;
+//public:
+//	vector<float> testNumArr;
 };
 
 #define CU CommonUtils::instance()

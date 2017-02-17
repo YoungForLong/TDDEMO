@@ -75,28 +75,3 @@ bool CollisionVolume::intersectsCV(CollisionVolume CV)
 	return false;
 
 }
-
-bool CollisionVolume::intersectsCircle(Circle& circle)
-{
-	int count = 0;
-	while (count < rect_.size())
-	{
-		if (circle.isIntersectsRect(rect_[count]))
-		{
-			return true;
-		}
-		count++;
-	}
-
-	count = 0;
-	while (count < circle_.size())
-	{
-		if (circle.isIntersectsCircle(circle_[count]))
-		{
-			return true;
-		}
-		count++;
-	}
-
-	return false;
-}

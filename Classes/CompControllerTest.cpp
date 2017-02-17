@@ -1,6 +1,7 @@
 #include "ComponentDependencies.h"
 #include "EntityBase.h"
 #include "Cell_Space_Partition.h"
+#include <numeric>
 
 bool CompControllerTest::init()
 {
@@ -69,6 +70,17 @@ void CompControllerTest::onKeyboardPressed(cocos2d::EventKeyboard::KeyCode code)
 void CompControllerTest::onKeyboardReleased(cocos2d::EventKeyboard::KeyCode code)
 {
 	_curKeyState = 0;
+
+	/*if (code == EventKeyboard::KeyCode::KEY_ESCAPE)
+	{
+		auto& arrRef = CU->testNumArr;
+
+		float aver = accumulate(arrRef.begin(), arrRef.end(), 0.0f) / arrRef.size();
+
+		CCLOG("averange obs force: %f", aver);
+
+		CCDirector::getInstance()->end();
+	}*/
 }
 
 bool CompControllerTest::attack()

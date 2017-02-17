@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _COLLISION_VOLUME_H_
+#define _COLLISION_VOLUME_H_
 #include"cocos2d.h"
 #include"Circle.h"
 
@@ -21,7 +22,7 @@ public:
 	float totalHeight_;
 	bool containsPoint(Point);
 	bool intersectsCV(CollisionVolume);
-	bool intersectsCircle(Circle& circle);
 	centreAlign anchorPoint_;//Ãªµã
 };
 
+#endif

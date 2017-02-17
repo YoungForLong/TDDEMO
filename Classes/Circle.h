@@ -1,9 +1,10 @@
-﻿#pragma once
-#include "cocos2d.h"
-#include "math.h"
-#include "CommonEnum.h"
+﻿#ifndef _CIRCLE_H_
+#define _CIRCLE_H_
+#include"cocos2d.h"
+#include"math.h"
 
 using namespace cocos2d;
+#define PI 3.1415926
 
 
 class Circle
@@ -191,3 +192,4 @@ public:
 
 #define ORIGN_CIRCLE Circle(0,Point(0,0),0,0)
 #define ORIGN_RECT Rect(0,0,0,0)
+#endif

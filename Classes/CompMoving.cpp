@@ -50,19 +50,19 @@ void CompMoving::update()
 		if (!obstacles.empty())
 		{
 			auto obsAvoi_force = obstacleAvoidance(obstacles)*ObsAvoiWeight;
-			CCLOG("seek force: %f,%f", totalForce.x, totalForce.y);
+			/*CCLOG("seek force: %f,%f", totalForce.x, totalForce.y);
 			CCLOG("obs force: %f,%f", obsAvoi_force.x, obsAvoi_force.y);
-			CU->testNumArr.push_back(obsAvoi_force.getLength());
+			CU->testNumArr.push_back(obsAvoi_force.getLength());*/
 			totalForce += obsAvoi_force;
 		}
 	}
 		
 
-	_velocity = totalForce.getNormalized()*_speed;
-	/*_velocity += totalForce;
-	_velocity = _velocity.getNormalized()*_speed;*/
+	//_velocity = totalForce.getNormalized()*_speed;
+	_velocity += totalForce;
+	_velocity = _velocity.getNormalized()*_speed;
 
-	//_heading = _velocity.getNormalized();
+	_heading = _velocity.getNormalized();
 	
 
 	//calculate pos
@@ -85,27 +85,30 @@ void CompMoving::loadMovingConfig()
 	_speed = CU->getConfigByKey(root->type(), "speed").asFloat();
 
 	_cv = CollisionVolume();
-	_cv.circle_.push_back(Circle(40, Vec2(0, 0), 0, 360));
-	_cv.totalWidth_ = 40;
-	_cv.totalHeight_ = 40;
+	_cv.circle_.push_back(Circle(80, Vec2(0, 0), 0, 360));
+	_cv.totalWidth_ = 80;
+	_cv.totalHeight_ = 80;
 	_canCross = CU->getConfigByKey(root->type(), "cancross").asBool();
+	_cv.anchorPoint_ = mid_mid;
 
 	_rSpeed = CU->getConfigByKey(root->type(), "rspeed").asFloat();
 
-	_dBoxLength = 80;
+	_dBoxLength = 160;
 }
 
 const Vec2 CompMoving::seek(Vec2 aimPos)
 {
 	auto toTarget = aimPos - _position;
-	if (toTarget.getLengthSq() < _speed*_speed)
+	if (toTarget.getLengthSq() < _speed*_speed )
 	{
 		if (onArrive)
 		{
 			onArrive();
-			_target = nullptr;
-			_aimPos = Vec2::ZERO;
 		}
+
+		_target = nullptr;
+		_aimPos = illegal_aim;
+
 		return toTarget;
 	}
 	return toTarget.getNormalized()*_speed;
@@ -166,7 +169,7 @@ const Vec2 CompMoving::obstacleAvoidance(vector<CompMoving*>& obstacles)
 		//tips: better to use "do while(0)" struct
 		if (poOnLocal.x >= 0)
 		{
-			float expandedRadius = obstacle->getBoundingRadius() + getBoundingRadius();
+			float expandedRadius = obstacle->getBoundingRadius() + 2*getBoundingRadius();
 
 			if (fabs(poOnLocal.y) < expandedRadius)
 			{
