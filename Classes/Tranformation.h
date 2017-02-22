@@ -134,9 +134,9 @@ inline Vec2 VectorToWorldSpace(const Vec2 &vec,
 //
 //------------------------------------------------------------------------
 inline Vec2 PointToLocalSpace(const Vec2 &point,
-	Vec2 &AgentHeading,
-	Vec2 &AgentSide,
-	Vec2 &AgentPosition)
+	const Vec2 &AgentHeading,
+	const Vec2 &AgentSide,
+	const Vec2 &AgentPosition)
 {
 
 	//make a copy of the point

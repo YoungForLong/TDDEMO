@@ -32,6 +32,50 @@ public:
 	Value getConfigByKey(ObjectType type,const std::string& key);
 
 	string type_to_string(const ObjectType& typeStr)const;
+
+	template<class T>
+	T multiMin(T arg, ...)
+	{
+		va_list argArr;
+		T temp;
+		T minArg = arg;
+
+		va_start(argArr, arg);
+		while (temp)
+		{
+			temp = va_arg(argArr, T);
+
+			if (minArg > temp)
+			{
+				minArg = temp;
+			}
+		}
+		va_end(argArr);
+
+		return minArg;
+	}
+
+	template<class T>
+	T multiMax(T arg, ...)
+	{
+		va_list argArr;
+		T temp;
+		T maxArg = arg;
+
+		va_start(argArr, arg);
+		while (temp)
+		{
+			temp = va_arg(argArr, T);
+
+			if (maxArg < temp)
+			{
+				maxArg = temp;
+			}
+		}
+		va_end(argArr);
+
+		return maxArg;
+	}
 private:
 	mutex _mut;
 
