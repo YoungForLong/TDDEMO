@@ -50,13 +50,15 @@ bool Circle::intersects(CollisionVolume * other, Vec2 & repulsion)
 		
 		return isIntersectsCircle(cir);
 	}
-	else
+	else if (other->type_ == slant_rect)
 	{
 		auto rect = static_cast<SlantRect*>(other);
 		auto s_t_o_l = PointToWorldSpace(center_, rect->heading(), rect->heading().getPerp(), rect->originRect().origin);
 
 		return Rect(Vec2::ZERO, rect->originRect().size).intersectsCircle(s_t_o_l, radius_);
 	}
+
+	return false;
 }
 
 CollisionVolume * Circle::realCV(const Vec2 & pos, const Vec2 & heading)

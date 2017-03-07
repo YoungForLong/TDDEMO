@@ -21,7 +21,7 @@ bool TestLayer::init()
 	if (!Layer::init())
 		return false;
 
-	auto ws = Effect::WaterEffect::create("water_pic_1.png");
+	auto ws = Effect::WaterEffect::create("water_pic.png");
 	ws->setAnchorPoint(Vec2::ZERO);
 	this->addChild(ws, world_sea_zorder);
 

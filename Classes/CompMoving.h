@@ -20,7 +20,7 @@ protected:
 	float _speed;
 	Vec2 _velocity;//速度
 	Vec2 _heading;//朝向
-	CollisionVolume _cv;//碰撞体积
+	CollisionVolume* _cv;//碰撞体积
 	float _rSpeed;//转向速度
 
 	CompMoving* _target;
@@ -47,8 +47,7 @@ public:
 	const Vec2 heading()const { return _heading; }
 	void setHeading(const Vec2& heading) { _heading = heading; }
 
-	const CollisionVolume getCV()const;
-	const float getBoundingRadius()const;
+	CollisionVolume* getCV();
 
 	const CompMoving* target()const { return _target; }
 	void setTarget(CompMoving* tar) { _target = tar; }
@@ -57,6 +56,7 @@ public:
 	const bool isObstacle()const { return !_canCross; }
 	//void setCanCross(bool cc) { _canCross = cc; }
 
+	const float getBoundingRadius();
 #pragma endregion
 
 public:

@@ -3,6 +3,21 @@
 #include "Tranformation.h"
 #include "CommonUtils.h"
 #include "EntityBase.h"
+#include "Circle.h"
+#include "SlantRect.h"
+
+const float CompMoving::getBoundingRadius()
+{
+	if (_cv->type_ == circle)
+	{
+		Circle* cir = static_cast<Circle*>(_cv);
+
+		return cir->radius_;
+	}
+
+	assert(0 && "not a circle");
+	return 0.0f;
+}
 
 bool CompMoving::init()
 {
@@ -51,49 +66,49 @@ void CompMoving::update()
 		{
 			auto obsAvoi_force = obstacleAvoidance(obstacles)*ObsAvoiWeight;
 			/*CCLOG("seek force: %f,%f", totalForce.x, totalForce.y);
-			CCLOG("obs force: %f,%f", obsAvoi_force.x, obsAvoi_force.y);
-			CU->testNumArr.push_back(obsAvoi_force.getLength());*/
+			CCLOG("obs force: %f,%f", obsAvoi_force.x, obsAvoi_force.y);*/
+			//CU->testNumArr.push_back(obsAvoi_force.getLength());
 			totalForce += obsAvoi_force;
 		}
 	}
 		
-
-	//_velocity = totalForce.getNormalized()*_speed;
-	_velocity += totalForce;
-	_velocity = _velocity.getNormalized()*_speed;
-
-	_heading = _velocity.getNormalized();
-	
-
-	//calculate pos
-	auto temp = _position;
-
-	if (syncHeading())
+	if (totalForce != Vec2::ZERO)
 	{
-		_position += _velocity;
-		CSP->updateEntity(this, temp);
+		_velocity += totalForce;
+		_velocity = _velocity.getNormalized()*_speed;
+
+		_heading = _velocity.getNormalized();
+
+		//calculate pos
+		auto temp = _position;
+
+		if (syncHeading())
+		{
+			_position += _velocity;
+			CSP->updateEntity(this, temp);
+		}
 	}
 }
 
 void CompMoving::clear()
 {
 	CSP->removeEntity(this);
+	
+	delete _cv;
+	_cv = NULL;
 }
 
 void CompMoving::loadMovingConfig()
 {
 	_speed = CU->getConfigByKey(root->type(), "speed").asFloat();
 
-	_cv = CollisionVolume();
-	_cv.circle_.push_back(Circle(80, Vec2(0, 0), 0, 360));
-	_cv.totalWidth_ = 80;
-	_cv.totalHeight_ = 80;
-	_canCross = CU->getConfigByKey(root->type(), "cancross").asBool();
-	_cv.anchorPoint_ = mid_mid;
+	_cv = new Circle(80, _position);
 
 	_rSpeed = CU->getConfigByKey(root->type(), "rspeed").asFloat();
 
 	_dBoxLength = 160;
+
+	_canCross = CU->getConfigByKey(root->type(), "cancross").asBool();
 }
 
 const Vec2 CompMoving::seek(Vec2 aimPos)
@@ -146,6 +161,23 @@ const Vec2 CompMoving::evade(CompMoving * target)
 
 	return flee(target->position() + target->velocity()*lookAheadTime);
 }
+
+//const Vec2 CompMoving::obstacleAvoidance(vector<CompMoving*>& obstacles)
+//{
+//	//对所有碰撞体做斥力计算，然后求合力
+//
+//	Vec2 sumRepulsion = Vec2::ZERO;
+//
+//	for_each(obstacles.begin(), obstacles.end(),[this,&sumRepulsion](CompMoving* obs) {
+//		Vec2 tempRepulsion = Vec2::ZERO;
+//		if (this->getCV()->intersects(obs->getCV(), tempRepulsion))
+//		{
+//			sumRepulsion += tempRepulsion;
+//		}
+//	});
+//
+//	return sumRepulsion;
+//}
 
 const Vec2 CompMoving::obstacleAvoidance(vector<CompMoving*>& obstacles)
 {
@@ -262,28 +294,7 @@ void CompMoving::setPostion(const Vec2 & pos)
 	CSP->updateEntity(this, temp);
 }
 
-const CollisionVolume CompMoving::getCV()const
+CollisionVolume* CompMoving::getCV()
 {
-	CollisionVolume CV;
-	int count = 0;
-	while (count < _cv.circle_.size())
-	{
-		Circle c1 = _cv.circle_[count];
-		CV.circle_.push_back(Circle(c1.radius_, c1.center_ + _position, 0, 360));
-		count++;
-	}
-	count = 0;
-	while (count < _cv.rect_.size())
-	{
-		Rect r1 = _cv.rect_[count];
-		CV.rect_.push_back(Rect(r1.origin.x + _position.x, r1.origin.y + _position.y, r1.size.width, r1.size.height));
-		count++;
-	}
-
-	return CV;
-}
-
-const float CompMoving::getBoundingRadius() const
-{
-	return 0.5f* max(_cv.totalHeight_, _cv.totalWidth_)*2.0f;
+	return _cv->realCV(_position, _heading);
 }
