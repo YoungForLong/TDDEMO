@@ -2,7 +2,8 @@
 #define _VERTEX_H_
 
 #include "ReferNode.h"
-#include <vector>
+#include <set>
+#include <algorithm>
 
 namespace recast_navigation {
 	
@@ -13,9 +14,9 @@ namespace recast_navigation {
 			ReferNode(refmap)
 		{}
 
-		bool addEdge(EdgeRef er);
+		void attach(VertexRef another);
 	private:
-		std::vector<EdgeRef> _edges;
+		std::set<Edge> _edges;
 	};
 
 }
