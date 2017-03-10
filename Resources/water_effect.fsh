@@ -24,7 +24,7 @@ float specular(vec3 n,vec3 l,vec3 e) {
   
 void main() {  
 
-    float timeFactor = 0.1;
+    float timeFactor = 0.01;
     float offsetFactor = 0.5;
     float refractionFactor = 0.7;
 

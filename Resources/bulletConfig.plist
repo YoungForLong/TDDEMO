@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"/>
+
+<plist version="1.0">
+	<dict>
+		<key>speed</key>
+		<string>4</string>
+
+		<key>spritename</key>
+		<string>stone_bullet</string>
+
+		<key>cancross</key>
+		<string>true</string>
+
+		<key>rspeed</key>
+		<string>1</string>
+	</dict>
+</plist>
