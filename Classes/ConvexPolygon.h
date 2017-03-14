@@ -47,16 +47,16 @@ namespace recast_navigation {
 
 		ConvexPolygon(const initializer_list<Vec2>& argList);
 
-		ConvexPolygon(const ConvexPolygon& other);
+		ConvexPolygon(const vector<Vec2>& arr);
 
-		unordered_set<Vec2> vertexSet;
+		std::vector<Vec2> vertexArr;
 
 		Vec2 centroid;
 
 		// divide poly into triangles
 		std::vector<Triangle> divide();
 
-		bool containsPoint(const Vec2& p);
+		bool containsPoint(const Vec2& p) const;
 
 	protected:
 		// ºÏ≤‚∆‰∞ºÕπ–‘

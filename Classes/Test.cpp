@@ -8,6 +8,9 @@
 #include "ComponentDependencies.h"
 #include "SelfMsgReciever.h"
 #include "GlobalTime.h"
+#include "FileNavmeshParser.h"
+
+using namespace recast_navigation;
 
 Scene * TestLayer::createScene()
 {
@@ -21,53 +24,56 @@ bool TestLayer::init()
 	if (!Layer::init())
 		return false;
 
-	auto ws = Effect::WaterEffect::create("water_pic.png");
+	/*auto ws = Effect::WaterEffect::create("water_pic.png");
 	ws->setAnchorPoint(Vec2::ZERO);
-	this->addChild(ws, world_sea_zorder);
+	this->addChild(ws, world_sea_zorder);*/
 
-	_hero = EnShip::create<EnShip>();
-	if (!_hero)
-		return false;
-	
-	_hero->getComponent<CompMoving>(comp_moving)->setPostion(Vec2(2632, 1536) / 2);
+	//test navmesh graph
+	NavmeshGraph = 
 
-	auto shower = _hero->getComponent<CompDisplayer>(comp_displayer);
-	shower->setLayer(this, world_above_sea_zorder);
+	//_hero = EnShip::create<EnShip>();
+	//if (!_hero)
+	//	return false;
+	//
+	//_hero->getComponent<CompMoving>(comp_moving)->setPostion(Vec2(2632, 1536) / 2);
+
+	//auto shower = _hero->getComponent<CompDisplayer>(comp_displayer);
+	//shower->setLayer(this, world_above_sea_zorder);
 
 
-	
-	//other ships
-	srand(time(0));
-	for (int i = 0; i < 10; ++i)
-	{
-		auto enemyShip = EnShip::create<EnShip>();
-		if (!enemyShip)
-			return false;
+	//
+	////other ships
+	//srand(time(0));
+	//for (int i = 0; i < 10; ++i)
+	//{
+	//	auto enemyShip = EnShip::create<EnShip>();
+	//	if (!enemyShip)
+	//		return false;
 
-		auto eShower = enemyShip->getComponent<CompDisplayer>(comp_displayer);
-		eShower->setLayer(this, world_above_sea_zorder);
+	//	auto eShower = enemyShip->getComponent<CompDisplayer>(comp_displayer);
+	//	eShower->setLayer(this, world_above_sea_zorder);
 
-		auto eCm = enemyShip->getComponent<CompMoving>(comp_moving);
-		eCm->setPostion(Vec2(rand() % 2732, rand() % 1536));
-	}
+	//	auto eCm = enemyShip->getComponent<CompMoving>(comp_moving);
+	//	eCm->setPostion(Vec2(rand() % 2732, rand() % 1536));
+	//}
 
-	//self msg reciever
-	SelfMsgReciever::create();
+	////self msg reciever
+	//SelfMsgReciever::create();
 
-	//keyboard event
-	auto listener = EventListenerKeyboard::create();
+	////keyboard event
+	//auto listener = EventListenerKeyboard::create();
 
-	listener->onKeyPressed = [this](EventKeyboard::KeyCode code,Event* e) {
-		_hero->getComponent<CompControllerTest>(comp_controller_test)->onKeyboardPressed(code);
-	};
+	//listener->onKeyPressed = [this](EventKeyboard::KeyCode code,Event* e) {
+	//	_hero->getComponent<CompControllerTest>(comp_controller_test)->onKeyboardPressed(code);
+	//};
 
-	listener->onKeyReleased = [this](EventKeyboard::KeyCode code, Event* e) {
-		_hero->getComponent<CompControllerTest>(comp_controller_test)->onKeyboardReleased(code);
-	};
+	//listener->onKeyReleased = [this](EventKeyboard::KeyCode code, Event* e) {
+	//	_hero->getComponent<CompControllerTest>(comp_controller_test)->onKeyboardReleased(code);
+	//};
 
-	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+	//this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-	this->scheduleUpdate();
+	//this->scheduleUpdate();
 
 	return true;
 }

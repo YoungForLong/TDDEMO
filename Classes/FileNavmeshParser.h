@@ -2,6 +2,7 @@
 #define _FILE_NAVMESH_PARSER_H_
 
 #include<cocos2d.h>
+#include "NavmeshGraph.h"
 
 using namespace std;
 USING_NS_CC;
@@ -11,22 +12,16 @@ namespace recast_navigation {
 	class FileNavmeshParser
 	{
 	public:
-		enum DataType{
-		comment,
-		poly,
-		vertex,
-		invalid
-		};
 
-		FileNavmeshParser();
+		FileNavmeshParser(NavmeshGraph& root);
 		~FileNavmeshParser();
 
-		bool load(const string& filename);
+		void parse(const string& filename);
 
-		void parse();
+	protected:
+
 	private:
-		unsigned char* _pFileData;
-		ssize_t _fileSize;
+		NavmeshGraph& _root;
 	};
 
 	typedef FileNavmeshParser FNP;
