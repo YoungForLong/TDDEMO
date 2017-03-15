@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="win32">
+      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\components">
+      <UniqueIdentifier>{eb4d53ef-d4a6-4a06-bc0b-f5018855e594}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common">
+      <UniqueIdentifier>{3d868cbd-8eeb-44f9-8311-a7abaf3e4c6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\effect">
+      <UniqueIdentifier>{2a50b2a8-1414-41ba-a9b8-2a09746daf87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entities">
+      <UniqueIdentifier>{51e3db54-6e63-4816-ae49-8e3a6503c5f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\fsm">
+      <UniqueIdentifier>{8aa7274b-8c1a-4442-835b-44ea6a7ef8dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\sys">
+      <UniqueIdentifier>{9529a2eb-a155-44b7-a4fe-3a79711ecc5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common\shape">
+      <UniqueIdentifier>{0d09a5f6-1e1c-4752-a41c-e264bbe0a666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\recast_navigation">
+      <UniqueIdentifier>{254caaea-3482-43c1-ab05-67ce17b7f851}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CompMoving.cpp">
+      <Filter>src\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CompDisplayer.cpp">
+      <Filter>src\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\WaterEffect.cpp">
+      <Filter>src\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SeaSprite.cpp">
+      <Filter>src\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CommonUtils.cpp">
+      <Filter>src\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CompBattle.cpp">
+      <Filter>src\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GlobalTime.cpp">
+      <Filter>src\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\EnBullet.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SelfMsgReciever.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\EnShip.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>src\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MsgDispatcher.cpp">
+      <Filter>src\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ObjectMgr.cpp">
+      <Filter>src\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Test.cpp">
+      <Filter>src\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CompControllerTest.cpp">
+      <Filter>src\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Cell_Space_Partition.cpp">
+      <Filter>src\common\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Circle.cpp">
+      <Filter>src\common\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SlantRect.cpp">
+      <Filter>src\common\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ConvexPolygon.cpp">
+      <Filter>src\recast_navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NavmeshGraph.cpp">
+      <Filter>src\recast_navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AStarSearch.cpp">
+      <Filter>src\recast_navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FileNavmeshParser.cpp">
+      <Filter>src\recast_navigation</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Singleton.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CommonUtils.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Telegram.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CommonEnum.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ComponentBase.h">
+      <Filter>src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CompMoving.h">
+      <Filter>src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CompCommunicator.h">
+      <Filter>src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Tranformation.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\C2DMatrix.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CompDisplayer.h">
+      <Filter>src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\WaterEffect.h">
+      <Filter>src\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SeaSprite.h">
+      <Filter>src\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\EnBullet.h">
+      <Filter>src\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\State.h">
+      <Filter>src\fsm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\StateMachine.h">
+      <Filter>src\fsm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CompBattle.h">
+      <Filter>src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GlobalTime.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\EntityBase.h">
+      <Filter>src\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ComponentDependencies.h">
+      <Filter>src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SelfMsgReciever.h">
+      <Filter>src\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\EnShip.h">
+      <Filter>src\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>src\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ClientTest.h">
+      <Filter>src\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MsgDispatcher.h">
+      <Filter>src\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ObjectBase.h">
+      <Filter>src\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ObjectMgr.h">
+      <Filter>src\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Test.h">
+      <Filter>src\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CompControllerTest.h">
+      <Filter>src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Cell_Space_Partition.h">
+      <Filter>src\common\shape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Circle.h">
+      <Filter>src\common\shape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CollisionVolume.h">
+      <Filter>src\common\shape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SlantRect.h">
+      <Filter>src\common\shape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ConvexPolygon.h">
+      <Filter>src\recast_navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NavmeshGraph.h">
+      <Filter>src\recast_navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FileNavmeshParser.h">
+      <Filter>src\recast_navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AStarSearch.h">
+      <Filter>src\recast_navigation</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc">
+      <Filter>resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
