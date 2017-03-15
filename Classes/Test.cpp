@@ -29,7 +29,9 @@ bool TestLayer::init()
 	this->addChild(ws, world_sea_zorder);*/
 
 	//test navmesh graph
-	NavmeshGraph = 
+	NavmeshGraph nvmgh;
+
+	nvmgh.addPoly()
 
 	//_hero = EnShip::create<EnShip>();
 	//if (!_hero)
