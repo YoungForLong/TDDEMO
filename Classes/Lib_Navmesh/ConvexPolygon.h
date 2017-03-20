@@ -10,6 +10,31 @@ using namespace cocos2d;
 
 namespace recast_navigation {
 
+	struct Edge
+	{
+		Edge(const Vec2& a,const Vec2& b):
+			from(a),
+			to(b)
+		{}
+
+		Vec2 from;
+		Vec2 to;
+
+		bool containsPoint(const Vec2& point)
+		{
+			return from.distanceSquared(point) < 1 ||
+				to.distanceSquared(point) < 1;
+		}
+
+		bool operator==(const Edge& other)
+		{
+			bool tagA = from == other.from && to == other.to;
+			bool tagB = from == other.to && to == other.from;
+
+			return tagA || tagB;
+		}
+	};
+
 	struct Triangle
 	{
 		Vec2 vertexes[3];
@@ -58,12 +83,18 @@ namespace recast_navigation {
 
 		bool containsPoint(const Vec2& p) const;
 
+		vector<Edge> getAllEdges()const;
+
+		Edge findCommonEdge(const ConvexPolygon& other) const;
+
 	protected:
 		// ºÏ≤‚∆‰∞ºÕπ–‘
 		bool checkConvex();
 
 		// @return cos(A)
-		float tri_point_to_angle(const Vec2& p1,const Vec2& p2,const Vec2& p3);
+		//float tri_point_to_angle(const Vec2& p1,const Vec2& p2,const Vec2& p3);
+
+		bool tri_point_z(const Vec2& p1, const Vec2& p2, const Vec2& p3) const;
 
 		void calculateCentroid();
 	};

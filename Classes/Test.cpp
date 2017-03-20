@@ -8,7 +8,9 @@
 #include "ComponentDependencies.h"
 #include "SelfMsgReciever.h"
 #include "GlobalTime.h"
-#include "FileNavmeshParser.h"
+#include "Lib_Navmesh\FileNavmeshParser.h"
+#include "Lib_Navmesh\GraphRender.h"
+#include "Lib_Navmesh\AStarSearch.h"
 
 using namespace recast_navigation;
 
@@ -24,58 +26,50 @@ bool TestLayer::init()
 	if (!Layer::init())
 		return false;
 
-	/*auto ws = Effect::WaterEffect::create("water_pic.png");
-	ws->setAnchorPoint(Vec2::ZERO);
-	this->addChild(ws, world_sea_zorder);*/
+	auto bg = LayerColor::create(Color4B::WHITE);
+	this->addChild(bg, -10);
 
 	//test navmesh graph
 	NavmeshGraph nvmgh;
 
-	nvmgh.addPoly()
+	nvmgh.loadFromFile("navmesh.json");
 
-	//_hero = EnShip::create<EnShip>();
-	//if (!_hero)
-	//	return false;
-	//
-	//_hero->getComponent<CompMoving>(comp_moving)->setPostion(Vec2(2632, 1536) / 2);
+	// »­Í¼
+	GraphRender render(nvmgh);
+	render.init();
+	render.addToLayer(this, 1.0f);
 
-	//auto shower = _hero->getComponent<CompDisplayer>(comp_displayer);
-	//shower->setLayer(this, world_above_sea_zorder);
+	// Ñ°Â·
+	AStarSearch pathFinder(nvmgh);
 
+	Vec2 begin(300, 200);
+	Vec2 end(800, 600);
 
-	//
-	////other ships
-	//srand(time(0));
-	//for (int i = 0; i < 10; ++i)
-	//{
-	//	auto enemyShip = EnShip::create<EnShip>();
-	//	if (!enemyShip)
-	//		return false;
+	// test
+	bool  tag = nvmgh.getNodeById(23)->poly.containsPoint(begin);
 
-	//	auto eShower = enemyShip->getComponent<CompDisplayer>(comp_displayer);
-	//	eShower->setLayer(this, world_above_sea_zorder);
+	auto node1 = DrawNode::create();
+	node1->drawCircle(begin, 2.0f, 360, 30, false, Color4F::MAGENTA);
+	this->addChild(node1, 10);
+	auto node2 = DrawNode::create();
+	node2->drawCircle(end, 2.0f, 360, 30, false, Color4F::GREEN);
+	this->addChild(node2, 10);
 
-	//	auto eCm = enemyShip->getComponent<CompMoving>(comp_moving);
-	//	eCm->setPostion(Vec2(rand() % 2732, rand() % 1536));
-	//}
+	auto node = pathFinder.result(begin, end);
 
-	////self msg reciever
-	//SelfMsgReciever::create();
+	CCLOG("%s","route:");
+	for (auto iter = node.cbegin(); iter != node.cend(); ++iter)
+	{
+		CCLOG("node is: %d", *iter);
+		render.drawSolidPoly(*iter);
+	}
 
-	////keyboard event
-	//auto listener = EventListenerKeyboard::create();
+	auto path = pathFinder.LOS_path(begin, end);
+	for (int i = 1; i < path.size(); ++i)
+	{
+		render.drawLine(Edge(path[i], path[i - 1]), Color4F::GREEN);
+	}
 
-	//listener->onKeyPressed = [this](EventKeyboard::KeyCode code,Event* e) {
-	//	_hero->getComponent<CompControllerTest>(comp_controller_test)->onKeyboardPressed(code);
-	//};
-
-	//listener->onKeyReleased = [this](EventKeyboard::KeyCode code, Event* e) {
-	//	_hero->getComponent<CompControllerTest>(comp_controller_test)->onKeyboardReleased(code);
-	//};
-
-	//this->_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-
-	//this->scheduleUpdate();
 
 	return true;
 }

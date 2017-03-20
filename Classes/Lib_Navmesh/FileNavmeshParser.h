@@ -1,8 +1,9 @@
 #ifndef _FILE_NAVMESH_PARSER_H_
 #define _FILE_NAVMESH_PARSER_H_
 
-#include<cocos2d.h>
+#include <cocos2d.h>
 #include "NavmeshGraph.h"
+#include "cocostudio\CocoStudio.h"
 
 using namespace std;
 USING_NS_CC;
@@ -18,6 +19,7 @@ namespace recast_navigation {
 
 		void parse(const string& filename);
 
+		void saveToFile(const string& filename);
 	protected:
 
 	private:

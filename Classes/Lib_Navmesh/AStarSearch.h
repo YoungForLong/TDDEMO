@@ -9,9 +9,9 @@ namespace recast_navigation {
 
 	//functor
 	struct cmp {
-		bool operator()(const GraphNode& one, const GraphNode& another)
+		bool operator()(GraphNode* one, GraphNode* another)
 		{
-			return one.FValue > another.FValue;
+			return one->FValue > another->FValue;
 		}
 	};
 
@@ -23,6 +23,12 @@ namespace recast_navigation {
 
 		vector<int> result(const Vec2& start, const Vec2& end);
 
+		// 拐角点法求路径
+		vector<Vec2> path(const Vec2& start, const Vec2& end);
+
+		// 光照射线法求路径
+		vector<Vec2> LOS_path(const Vec2& start, const Vec2& end);
+	protected:
 		bool search();
 
 		// 此处为了减少运算量，使用平方
@@ -37,9 +43,13 @@ namespace recast_navigation {
 	private:
 		Vec2 _start;
 		Vec2 _end;
+		
+		// 存放搜索路径的初始节点和目的节点，避免重复计算
+		int _startNode;
+		int _endNode;
+
 		NavmeshGraph& _sourceMap;
-		vector<float> _FValueArr;//存放的是节点的F value，如果还未计算，则存放的是infinity_float
-		vector<int> _route;
+		vector<int> _route; // 存放的是最短路径生成树的所有叶子的父节点
 	};
 }
 

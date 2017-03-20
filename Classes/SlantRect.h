@@ -2,7 +2,7 @@
 #define _RECTANGLE_H_
 
 #include "cocos2d.h"
-#include "Tranformation.h"
+#include "Transformation.h"
 #include "CommonUtils.h"
 #include <numeric>
 #include "CollisionVolume.h"

@@ -1,6 +1,6 @@
 #include "CompMoving.h"
 #include "Cell_Space_Partition.h"
-#include "Tranformation.h"
+#include "Transformation.h"
 #include "CommonUtils.h"
 #include "EntityBase.h"
 #include "Circle.h"

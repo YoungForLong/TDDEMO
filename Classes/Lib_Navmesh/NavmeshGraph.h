@@ -11,9 +11,8 @@ namespace recast_navigation {
 		sea
 	};
 
-	typedef Vec2 Edge[2];
-
-	struct GraphNode{
+	class GraphNode{
+	public:
 		int idx;
 		ConvexPolygon poly;
 		vector<int> siblings;
@@ -29,17 +28,21 @@ namespace recast_navigation {
 			int temp = 1;
 
 			va_start(argArr, arg);
-
 			while (temp)
 			{
 				temp = va_arg(argArr, int);
 
 				siblings.push_back(temp);
 			}
-
 			va_end(argArr);
-
 		}
+
+		GraphNode(int index, const ConvexPolygon& polygon, PolyType t, vector<int> siblings_) :
+			idx(index),
+			poly(polygon),
+			type(t),
+			siblings(siblings_)
+		{}
 
 		void operator= (const GraphNode& other)
 		{
@@ -54,9 +57,12 @@ namespace recast_navigation {
 	public:
 		NavmeshGraph();
 
+		~NavmeshGraph();
+
 		// open filename.navmesh to load data
 		virtual bool loadFromFile(const string& filename);
 
+		virtual void saveTofile(const string& filename);
 		
 		vector<Vec2> AStarSearch(Vec2 start, Vec2 end);
 
@@ -73,6 +79,8 @@ namespace recast_navigation {
 		const int size()const { return _size; }
 
 		GraphNode* getNodeById(int id) const { return _nodeMap.at(id); }
+
+		void traversal(function<void(GraphNode*)> func)const;
 
 	public:// dynamic change the map during runtime
 		void addPoly(GraphNode* node);
