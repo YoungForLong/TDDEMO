@@ -33,6 +33,8 @@ namespace recast_navigation {
 
 			return tagA || tagB;
 		}
+
+		static const Edge NIL;
 	};
 
 	struct Triangle

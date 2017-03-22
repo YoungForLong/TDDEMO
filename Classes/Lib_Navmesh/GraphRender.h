@@ -16,7 +16,7 @@ public:
 
 	void drawPoly(const ConvexPolygon& poly);
 
-	void drawSolidPoly(int idx);
+	void drawSolidPoly(int idx, Color4F color = Color4F(0.13f, 0.1f, 0.6f, 0.4f));
 
 	void drawIndex(const Vec2& centroid, int idx);
 

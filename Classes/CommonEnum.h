@@ -71,6 +71,7 @@ const float seek_offset_precision = 1.0f;
 //id，从1-100为系统保留id
 const int illegal_id = -9999;
 const int selfMsgReceiver_id = 1;
+const int hero_id = 2;
 
 //depth,z_order
 const int bg_zorder = -10;

@@ -36,7 +36,7 @@ private:
 	
 	int calculateDamage(int damage);
 
-	bool isAttackCoolDown() const { return _attackCoolDown; }
+	bool isAttackCoolDown() const { return _attackCoolDown == 0; }
 private:
 	BattleConfig _originConfig;
 	

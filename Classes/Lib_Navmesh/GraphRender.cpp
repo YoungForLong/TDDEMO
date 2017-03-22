@@ -17,6 +17,7 @@ void GraphRender::init()
 	_root.traversal([this](GraphNode* node) {
 		auto poly = node->poly;
 		this->drawPoly(poly);
+		this->drawSolidPoly(node->idx, Color4F::WHITE);
 		this->drawIndex(poly.centroid, node->idx);
 	});
 }
@@ -43,7 +44,7 @@ void GraphRender::drawPoly(const ConvexPolygon & poly)
 	drawLine(Edge(lastPoint, poly.vertexArr.at(0)));
 }
 
-void GraphRender::drawSolidPoly(int idx)
+void GraphRender::drawSolidPoly(int idx, Color4F color)
 {
 	auto poly = _root.getNodeById(idx)->poly;
 
@@ -56,7 +57,7 @@ void GraphRender::drawSolidPoly(int idx)
 		vertArr[i] = poly.vertexArr.at(i);
 	}
 
-	render->drawSolidPoly(vertArr, length, Color4F(0.13f, 0.1f, 0.6f, 0.5f));
+	render->drawSolidPoly(vertArr, length, color);
 
 	_canvas->addChild(render, 0);
 }

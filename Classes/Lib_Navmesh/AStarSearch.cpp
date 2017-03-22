@@ -15,6 +15,33 @@ vector<int> recast_navigation::AStarSearch::result(const Vec2 & start, const Vec
 {
 	_start = start;
 	_end = end;
+
+	_startNode = _sourceMap.pointInWhichPoly(start);
+	_endNode = _sourceMap.pointInWhichPoly(end);
+	
+	// 优化，如果在同一个多边形中，直接返回当前多边形
+	if (_startNode == _endNode)
+	{
+		return vector<int>({ _startNode });
+	}
+
+	// 优化，如果被已经储存的路径包含，从路径中截取
+	for (auto iter = _pathList.begin(); iter != _pathList.end(); ++iter)
+	{
+		vector<int> wayPoints;
+		if (belongToPath(_startNode, _endNode, iter->path, wayPoints))
+		{
+			iter->priority++;
+			_pathList.sort();
+			return wayPoints;
+		}
+		else
+		{
+			iter->priority--;
+		}
+	}
+
+
 	search();
 
 	stack<int> path;
@@ -32,35 +59,26 @@ vector<int> recast_navigation::AStarSearch::result(const Vec2 & start, const Vec
 	while (!path.empty())
 	{
 		int idx = path.top();
-		CCLOG("path node: %d", idx);
 		path.pop();
 
 		ret.push_back(idx);
 	}
 
-	return ret;
-}
+	// 优化，当前路径存入路径表中
+	PriorityPath<int> pp;
+	pp.path = ret;
+	pp.priority = 1;
 
-vector<Vec2> recast_navigation::AStarSearch::path(const Vec2 & start, const Vec2 & end)
-{
-	auto nodes = result(start, end);
-	
-	//路径的拐点
-	vector<Vec2> ret;
-	ret.push_back(start);
-
-	int length = nodes.size();
-	int count = 1;
-	while (ret.back().distanceSquared(end) > 1 && count < length)//直到寻找到路径点，精度为1
+	if (_pathList.size() >= maxCachePathNum)
 	{
-		Edge e = _sourceMap.getNodeById(nodes[count])
-			->poly.findCommonEdge(_sourceMap.getNodeById(nodes[count - 1])->poly);
-
-		Vec2 curPoint = ret.back();
-		
-
-		count++;
+		auto mpp = _pathList.back();
+		if (mpp.priority < 1)
+		{
+			_pathList.pop_back();
+		}
 	}
+	_pathList.push_back(pp);
+	_pathList.sort();
 
 	return ret;
 }
@@ -69,7 +87,7 @@ vector<Vec2> recast_navigation::AStarSearch::LOS_path(const Vec2 & start, const 
 {
 	auto nodes = result(start, end);
 
-	//找到所有公共边
+	//找到所有公共边，亦即穿出边
 	vector<Edge> allCommonEdges;
 	for (int i = 1; i < nodes.size(); ++i)
 	{
@@ -102,6 +120,145 @@ vector<Vec2> recast_navigation::AStarSearch::LOS_path(const Vec2 & start, const 
 	return ret;
 }
 
+vector<Vec2> recast_navigation::AStarSearch::tp_path(const Vec2 & start, const Vec2 & end)
+{
+	auto nodes = result(start, end);
+
+	if (nodes.size() == 1)
+	{
+		return vector<Vec2>({ start,end });
+	}
+
+	//找到所有公共边，亦即穿出边
+	vector<Edge> allCommonEdges;
+	for (int i = 1; i < nodes.size(); ++i)
+	{
+		auto poly1 = _sourceMap.getNodeById(nodes[i - 1])->poly;
+		auto poly2 = _sourceMap.getNodeById(nodes[i])->poly;
+		allCommonEdges.push_back(poly1.findCommonEdge(poly2));
+	}
+
+	vector<Vec2> ret;
+	ret.push_back(start);
+
+	bool isNewTp = true;
+	Vec2 convergenceN[2] = { Vec2::ZERO,Vec2::ZERO };
+
+	int length = allCommonEdges.size();
+	int leftId = 0;
+	int rightId = 0;
+	for (int i = 0; i < length; ++i)
+	{
+		auto curStart = ret.back();
+
+		if (isNewTp)
+		{
+			// 收敛的夹角，两个向量，0为left，1为right
+			convergenceN[0] = allCommonEdges[i].from - curStart; 
+			convergenceN[1] = allCommonEdges[i].to - curStart;
+
+			if (left_or_right(convergenceN[0], convergenceN[1]) == 1)
+			{
+				// swap
+				auto temp = convergenceN[0];
+				convergenceN[0] = convergenceN[1];
+				convergenceN[1] = temp;
+			}
+
+			leftId = i;
+			rightId = i;
+
+			isNewTp = false;
+			continue;
+		}
+
+		Vec2 curTwo[2] = { allCommonEdges[i].from - curStart,allCommonEdges[i].to - curStart };
+		if (left_or_right(curTwo[0], curTwo[1]) == 1)
+		{
+			// swap
+			auto temp = curTwo[0];
+			curTwo[0] = curTwo[1];
+			curTwo[1] = temp;
+		}
+
+		//判断现在的两个新向量是否在以前向量之间
+		int curL_on_conL = left_or_right(curTwo[0], convergenceN[0]);
+		int curL_on_conR = left_or_right(curTwo[0], convergenceN[1]);
+		int curR_on_conL = left_or_right(curTwo[1], convergenceN[0]);
+		int curR_on_conR = left_or_right(curTwo[1], convergenceN[1]);
+
+		if (curL_on_conL == 0 && curR_on_conR == 1)// 在夹角外,包含
+			continue;
+		else if (curR_on_conL == 0) // 在夹角外，左边
+		{
+			// 收敛夹角的左点为拐点
+			auto turningPoint = convergenceN[0] + curStart;
+			ret.push_back(turningPoint);
+			isNewTp = true;
+			i = leftId;
+		}
+		else if (curL_on_conR == 1) // 在夹角外，右边
+		{
+			// 右点为拐点
+			auto turningPoint = convergenceN[1] + curStart;
+			ret.push_back(turningPoint);
+			isNewTp = true;
+			i = rightId;
+		}
+		else // 在夹角内
+		{
+			if (curL_on_conL == 1)
+			{
+				convergenceN[0] = curTwo[0];
+				leftId = i;
+			}
+			
+			if (curR_on_conR == 0)
+			{
+				convergenceN[1] = curTwo[1];
+				rightId = i;
+			}
+		}
+	}
+
+	// 处理最后一个点
+	auto curTp = ret.back();
+	auto endN = end - curTp;
+	int end_on_conL = left_or_right(endN, convergenceN[0]);
+	int end_on_conR = left_or_right(endN, convergenceN[1]);
+
+	if (end_on_conL == 0)
+	{
+		ret.push_back(convergenceN[0] + curTp);
+	}
+	else if (end_on_conR == 1)
+	{
+		ret.push_back(convergenceN[1] + curTp);
+	}
+
+	ret.push_back(end);
+
+	return ret;
+}
+
+int recast_navigation::AStarSearch::left_or_right(const Vec2 & origin, const Vec2 & target)
+{
+	if (origin.getDistanceSq(target) < 1)
+		return 3;
+
+	Vec3 o3d(origin.x, origin.y, 0);
+	Vec3 t3d(target.x, target.y, 0);
+
+	Vec3 result(Vec3::ZERO);
+
+	Vec3::cross(o3d, t3d, &result);
+
+	if (result.z > 0)
+		return 1;
+	else
+		return 0;
+}
+
 bool recast_navigation::AStarSearch::search()
 {
 	// 储存未被存入树中，但已经被访问过的节点
@@ -117,11 +274,14 @@ bool recast_navigation::AStarSearch::search()
 	vector<bool> isInOpen(mapSize, false);
 
 	// 源节点入队
-	int startId = _sourceMap.pointInWhichPoly(_start);
-	_startNode = startId;
-	OPEN.push(_sourceMap.getNodeById(startId));
-	isInOpen.at(startId) = true;
-	//_FValueArr.at(startId) = 0.0f;
+	if (!(_sourceMap.getNodeById(_startNode)->poly.containsPoint(_start)))
+	{
+		_startNode = _sourceMap.pointInWhichPoly(_start);
+	}
+	
+	OPEN.push(_sourceMap.getNodeById(_startNode));
+	isInOpen.at(_startNode) = true;
+	//_FValueArr.at(_startNode) = 0.0f;
 
 	while (!OPEN.empty())
 	{
@@ -192,4 +352,34 @@ float recast_navigation::AStarSearch::H_func(const Vec2 & last, const Vec2 & cur
 float recast_navigation::AStarSearch::G_func(const Vec2 & centroid)
 {
 	return centroid.distanceSquared(_end);
+}
+
+bool recast_navigation::AStarSearch::belongToPath(int start, int end, const vector<int>& oldPath, vector<int>& ret)
+{
+	int startTag = -1;
+	int endTag = -1;
+	for (int i = 0; i < oldPath.size(); ++i)
+	{
+		if (oldPath[i] == start)
+			startTag = i;
+
+		if (oldPath[i] == end)
+			endTag = i;
+	}
+
+	if ((endTag != -1) && (startTag != -1))
+	{
+		int diff = endTag - startTag;
+		int factor = diff / abs(diff);
+
+		for (int j = startTag; !(j == endTag);)
+		{
+			ret.push_back(oldPath[j]);
+			j += factor;
+		}
+
+		return true;
+	}
+
+	return false;
 }

@@ -28,6 +28,7 @@ public:
 public:
 	void addMsg(long int tiemdelay, int sender, int receiver, MsgType msg, void* extra);
 public:
+	void update() { dispatchMsg(); }
 
 	//updated func
 	void dispatchMsg();

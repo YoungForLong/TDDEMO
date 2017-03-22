@@ -2,6 +2,8 @@
 
 using namespace recast_navigation;
 
+const Edge Edge::NIL(Vec2::ZERO, Vec2::ZERO);
+
 recast_navigation::ConvexPolygon::ConvexPolygon(Vec2 arg, ...)
 {
 	va_list argArr;

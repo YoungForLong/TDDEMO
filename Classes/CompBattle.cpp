@@ -24,6 +24,8 @@ bool CompBattle::init()
 
 	//test
 	_bulletType = bullet;
+
+	return true;
 }
 
 void CompBattle::update()

@@ -2,6 +2,7 @@
 #include "Test.h"
 #include "GlobalTime.h"
 #include "CommonUtils.h"
+#include "WorldMap.h"
 
 USING_NS_CC;
 
@@ -55,6 +56,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 		}
 	
 	});
+	
+	WorldMap::instance()->init();
 
 #pragma endregion
 	
