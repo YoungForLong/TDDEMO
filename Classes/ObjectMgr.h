@@ -2,6 +2,7 @@
 #define _OBJECT_MGR_H_
 #include "Singleton.h"
 #include <map>
+#include "cocos2d\cocos\math\Vec2.h"
 
 using namespace std;
 
@@ -24,6 +25,8 @@ public:
 	void updateAll();
 
 	int getNewId();
+
+	cocos2d::Vec2 pos_of_camera;
 };
 
 #define OMGR ObjectMgr::instance()

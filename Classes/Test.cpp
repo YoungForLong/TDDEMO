@@ -3,10 +3,11 @@
 #include "ObjectMgr.h"
 #include "Cell_Space_Partition.h"
 #include "WaterEffect.h"
-#include "EnShip.h"
+#include "EnHero.h"
 #include "ComponentDependencies.h"
 #include "SelfMsgReciever.h"
 #include "GlobalTime.h"
+#include "EnEnvironment.h"
 
 Scene * TestLayer::createScene()
 {
@@ -20,9 +21,14 @@ bool TestLayer::init()
 	if (!Layer::init())
 		return false;
 
-	_hero = EntityBase::create<EnShip>();
+	// entities
+	_hero = EntityBase::create<EnHero>();
 	auto compDis = _hero->getComponent<CompDisplayer>(comp_displayer);
 	compDis->setLayer(this, 10);
+
+	auto environment = EntityBase::create<EnEnvironment>();
+	auto cd = environment->getComponent<CompDisplayer>(comp_displayer);
+	cd->setLayer(this, 10);
 
 	auto compCon = _hero->getComponent<CompControllerTest>(comp_controller_test);
 

@@ -15,7 +15,8 @@ enum ObjectType
 {
 	bullet,
 	stone_bullet,
-	ship
+	ship,
+	environment
 };
 
 enum ComponentType
@@ -52,6 +53,8 @@ const float precision = 0.001f;
 const float FPS = 60.0f;
 const float ADT = 1.0f / FPS;
 const int next_frame = 1;
+const float screen_width = 1366.0f;
+const float screen_height = 768.0f;
 
 //map
 const int WHOLE_MAP_WIDTH = 10000;

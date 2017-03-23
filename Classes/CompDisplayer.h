@@ -15,13 +15,15 @@ public:
 
 	void applySprite(ObjectType type);
 
+	void applySprite(const string& filename);
+
 	void setLayer(Layer* layer, int zorder) { layer->addChild(_sprite, zorder); }
 
 	Vec2 transformToVisionPosition(const Vec2& pos);
 private:
 	//textures: pictures, particles, bones
 	Sprite* _sprite;
-	
+
 	std::queue<Vec2> _latestHeadings;
 };
 

@@ -9,7 +9,9 @@ bool CompDisplayer::init()
 	if (!root)
 		return false;
 
-	applySprite(root->type());
+	// 有几种类型需要手动添加图片名
+	if(root->type() != environment)
+		applySprite(root->type());
 
 	return true;
 }
@@ -49,7 +51,15 @@ void CompDisplayer::applySprite(ObjectType type)
 	_sprite->retain();
 }
 
+void CompDisplayer::applySprite(const string & filename)
+{
+	_sprite = CREATE_SPRITE(filename);
+	_sprite->retain();
+}
+
 Vec2 CompDisplayer::transformToVisionPosition(const Vec2& pos)
 {
-	return pos;
+	Vec2 halfScreen = Vec2(screen_width, screen_height) / 2.0f;
+
+	return halfScreen + pos - OMGR->pos_of_camera;
 }

@@ -32,6 +32,7 @@ bool CompMoving::init()
 	_aimPos = illegal_aim;
 	onArrive = nullptr;
 	_rSpeed = 0;
+	_active = true;
 
 	loadMovingConfig();
 
@@ -42,6 +43,9 @@ bool CompMoving::init()
 
 void CompMoving::update()
 {
+	if (!_active)
+		return;
+
 	//calculate velocity
 	Vec2 totalForce = Vec2::ZERO;
 	if (_target != nullptr)

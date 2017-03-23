@@ -8,7 +8,7 @@ USING_NS_CC;
 
 static cocos2d::Size tinyTestSize = cocos2d::Size(720, 400);
 static cocos2d::Size halfTestSize = cocos2d::Size(1366, 768);
-static cocos2d::Size designResolutionSize = cocos2d::Size(1000,1000);
+static cocos2d::Size designResolutionSize = cocos2d::Size(1366,768);
 
 
 AppDelegate::AppDelegate()

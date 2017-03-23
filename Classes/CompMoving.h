@@ -47,6 +47,8 @@ public:
 	const Vec2 heading()const { return _heading; }
 	void setHeading(const Vec2& heading) { _heading = heading; }
 
+	const void setActive(bool tag) { _active = tag; }
+
 	CollisionVolume* getCV();
 
 	const CompMoving* target()const { return _target; }

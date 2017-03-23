@@ -1,5 +1,6 @@
 #include "ObjectMgr.h"
 #include "EntityBase.h"
+#include "CompMoving.h"
 
 
 bool ObjectMgr::registerEntity(EntityBase * obj_)
@@ -27,6 +28,12 @@ EntityBase * ObjectMgr::getEntityById(const int id_)
 
 void ObjectMgr::updateAll()
 {
+	auto hero = getEntityById(hero_id);
+	if (hero)
+	{
+		pos_of_camera = hero->getComponent<CompMoving>(comp_moving)->position();
+	}
+
 	for (auto iter = _objMap.begin(); iter != _objMap.end(); ++iter)
 	{
 		auto entity = (*iter).second;
